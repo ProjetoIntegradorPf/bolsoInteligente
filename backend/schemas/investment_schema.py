@@ -16,8 +16,8 @@ class InvestmentCreateSchema(InvestmentBase):
 
 class InvestmentSchema(InvestmentBase):
     id: int
-    date_created: datetime.datetime
-    date_last_updated: datetime.datetime
+    date_created: datetime
+    date_last_updated: datetime
 
     class Config:
         orm_mode = True

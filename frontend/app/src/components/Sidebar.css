@@ -1,24 +1,31 @@
 .sidebar {
     background-color: #f0f0f0; /* Cor de fundo do sidebar */
-    width: 200px; /* Largura do sidebar */
+    width: 300px; /* Largura do sidebar */
     height: 100%; /* Altura do sidebar (ajustável conforme necessário) */
     position: fixed;
     left: 0;
     top: 0;
     overflow-y: auto; /* Adicione barra de rolagem vertical se necessário */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza os itens horizontalmente */
   }
   
-  .sidebar ul {
-    list-style-type: none;
-    padding: 0;
+  .menu-label {
+    font-weight: bold;
+    margin-top: 20px; /* Adiciona um espaço acima do label */
   }
   
-  .sidebar ul li {
+  .menu-list {
+    padding-left: 0;
+    list-style: none;
+  }
+  
+  .menu-list li {
     padding: 10px;
-    cursor: pointer;
   }
   
-  .sidebar ul li:hover {
+  .menu-list li:hover {
     background-color: #ccc; /* Cor de fundo ao passar o mouse */
   }
   

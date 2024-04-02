@@ -22,7 +22,7 @@ const Login = () => {
     const data = await response.json();
 
     if (!response.ok) {
-      response.status >= 400 < 500 ? setErrorMessage("E-mail ou senha inválidos") : setErrorMessage(data.detail)
+      response.status >= 400 && response.status < 500 ? setErrorMessage("E-mail ou senha inválidos") : setErrorMessage(data.detail)
     } else {
       setToken(data.access_token);
     }

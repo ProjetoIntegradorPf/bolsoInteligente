@@ -7,6 +7,7 @@ class ExpenseBase(BaseModel):
 
 
 class ExpenseCreateSchema(ExpenseBase):
+    
     pass
 
 

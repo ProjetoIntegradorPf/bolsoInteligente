@@ -1,22 +1,14 @@
-.card-menu {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    padding: 20px;
-  }
-  
-  .card {
-    background-color: #fff; /* Cor de fundo dos cards */
-    border: 1px solid #ddd; /* Borda dos cards */
+.card {
+    background-color: #fff;
+    border: 5px solid #ddd;
     border-radius: 5px;
     padding: 20px;
     margin: 10px;
-    width: calc(33.33% - 20px); /* Largura do card (ajustável conforme necessário) */
-    box-sizing: border-box;
     transition: background-color 0.3s ease;
+    width: 100%; /* Define a largura do card para ocupar 100% da largura da coluna */
   }
   
   .card:hover {
-    background-color: #f9f9f9; /* Cor de fundo ao passar o mouse */
+    background-color: #f9f9f9;
   }
   

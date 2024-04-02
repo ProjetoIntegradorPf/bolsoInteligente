@@ -1,71 +1,53 @@
-import datetime
-import fastapi
-import sqlalchemy.orm as orm
+from sqlalchemy.orm import Session
 
-from models.transaction_model import TransactionModel
+import repositories.transaction_repository as transaction_repository
+
+from fastapi import HTTPException
+
+from repositories.expense_repository import get_expense_by_id
+
+from repositories.investment_repository import get_investment_by_id
+
+from repositories.revenue_repository import get_revenue_by_id
 
 import schemas.transaction_schema as transaction_schema, schemas.user_schema as user_schema
 
-oauth2schema = fastapi.security.OAuth2PasswordBearer(tokenUrl="/api/token")
+async def create_transaction(db: Session, user: user_schema.UserSchema, transaction: transaction_schema.TransactionCreateSchema):
+    await check_transaction_categories(db, user, transaction)    
+    return await transaction_repository.create_transaction(db, user, transaction)
 
-JWT_SECRET = "myjwtsecret"
+async def get_transactions(db: Session, user: user_schema.UserSchema, filters: dict = None):
+    return await transaction_repository.get_transactions(db, user, filters)
 
-async def create_transaction(user: user_schema.UserSchema, db: orm.Session, transaction: transaction_schema.TransactionCreateSchema):
-    transaction = TransactionModel(**transaction.dict(), owner_id=user.id)
-    db.add(transaction)
-    db.commit()
-    db.refresh(transaction)
-    return transaction_schema.TransactionSchema.from_orm(transaction)
+async def get_transaction_by_id(db: Session, user: user_schema.UserSchema, transaction_id: int):
+    return await transaction_repository.get_transaction_by_id(db, user, transaction_id)
 
+async def delete_transaction(db: Session, user: user_schema.UserSchema, transaction_id: int):
+    return await transaction_repository.delete_transaction(db, user, transaction_id)
 
-async def get_transactions(user: user_schema.UserSchema, db: orm.Session, filters: dict = None):
-    query = db.query(TransactionModel).filter_by(owner_id=user.id)
-
-    if filters:
-        for field, value in filters.items():
-            query = query.filter(getattr(TransactionModel, field) == value)
-
-    transactions = query.all()
-
-    return list(map(transaction_schema.TransactionSchema.from_orm, transactions))
+async def update_transaction(db: Session, user: user_schema.UserSchema, transaction_id: int, transaction: transaction_schema.TransactionCreateSchema):
+    return await transaction_repository.update_transaction(db, user, transaction_id, transaction)
 
 
-async def _transaction_selector(transaction_id: int, user: user_schema.UserSchema, db: orm.Session):
-    transaction = (
-        db.query(TransactionModel)
-        .filter_by(owner_id=user.id)
-        .filter(TransactionModel.id == transaction_id)
-        .first()
-    )
-
-    if transaction is None:
-        raise fastapi.HTTPException(status_code=404, detail="Transaction does not exist")
-
-    return transaction
-
-
-async def get_transaction(transaction_id: int, user: user_schema.UserSchema, db: orm.Session):
-    transaction = await _transaction_selector(transaction_id=transaction_id, user=user, db=db)
-
-    return transaction_schema.TransactionSchema.from_orm(transaction)
-
-
-async def delete_transaction(transaction_id: int, user: user_schema.UserSchema, db: orm.Session):
-    transaction = await _transaction_selector(transaction_id, user, db)
-
-    db.delete(transaction)
-    db.commit()
-
-async def update_transaction(transaction_id: int, transaction: transaction_schema.TransactionCreateSchema, user: user_schema.UserSchema, db: orm.Session):
-    transaction_db = await _transaction_selector(transaction_id, user, db)
-
-    transaction_db.description = transaction.description
-    transaction_db.type = transaction.type
-    transaction_db.value = transaction.value
-    transaction_db.date_last_updated = datetime.datetime.now()
-
-    db.commit()
-    db.refresh(transaction_db)
-
-    return transaction_schema.TransactionSchema.from_orm(transaction_db)
-
+async def check_transaction_categories(db: Session, user: user_schema.UserSchema, transaction: transaction_schema.TransactionCreateSchema):
+    if transaction.category_expense_id is not None:
+        if transaction.category_revenue_id is not None or transaction.category_investment_id is not None:
+            raise HTTPException(status_code=422, detail="Cannot set category_revenue_id or category_investment_id when category_expense_id is set")
+        expense = await get_expense_by_id(db, user, transaction.category_expense_id)
+        if not expense:
+            raise HTTPException(status_code=404, detail="Category Expense not found")
+        return expense
+    if transaction.category_revenue_id is not None:
+        if transaction.category_expense_id is not None or transaction.category_investment_id is not None:
+            raise HTTPException(status_code=422, detail="Cannot set category_expense_id or category_investment_id when category_revenue_id is set")
+        revenue = await get_revenue_by_id(db, user, transaction.category_revenue_id)
+        if not revenue:
+            raise HTTPException(status_code=404, detail="Category Revenue not found")
+        return revenue
+    if transaction.category_investment_id is not None:
+        if transaction.category_expense_id is not None or transaction.category_revenue_id is not None:
+            raise HTTPException(status_code=422, detail="Cannot set category_expense_id or category_revenue_id when category_investment_id is set")
+        investment = await get_investment_by_id(db, user, transaction.category_investment_id)
+        if not investment:
+            raise HTTPException(status_code=404, detail="Category Investment not found")
+        return investment

@@ -1,17 +1,38 @@
-import React from 'react';
 import './Sidebar.css';
 
+import React, { useContext } from "react";
+
+import { UserContext } from "../context/UserContext";
+
+export const cards = ['Cadastrar Categoria de Receita',
+'Cadastrar Categoria de Despesa',
+'Cadastrar Categoria de Investimento',
+'Relatorio Geral',
+'Relatorio de Despesas',
+'Relatorio de Receitas',
+'Relatorio de Investimentos'];
+
 const Sidebar = () => {
+  const [token, setToken] = useContext(UserContext);
+
+  const handleLogout = () => {
+    setToken(null);
+  };
+
   return (
-    <div className="sidebar">
-      <ul>
-        <li>Item 1</li>
-        <li>Item 2</li>
-        <li>Item 3</li>
-        <li>Item 4</li>
-        {/* Adicione mais itens conforme necessário */}
-      </ul>
-    </div>
+    <aside className="sidebar">
+    <p className="menu-label">Menu</p>
+    <ul className="menu-list">
+      {cards.map((card, index) => (
+        <li key={index}>{card}</li>
+      ))}
+    </ul>
+    {token && (
+        <button className="button" onClick={handleLogout}>
+          Sair
+        </button>
+      )}
+    </aside>
   );
 };
 

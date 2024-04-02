@@ -58,4 +58,4 @@ async def get_current_user(
             status_code=401, detail="Invalid Email or Password"
         )
 
-    return user_schema.UserSchema.from_orm(user)
+    return user
