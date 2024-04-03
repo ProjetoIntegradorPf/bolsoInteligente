@@ -4,35 +4,39 @@ import React, { useContext } from "react";
 
 import { UserContext } from "../context/UserContext";
 
-export const cards = ['Cadastrar Categoria de Receita',
-'Cadastrar Categoria de Despesa',
-'Cadastrar Categoria de Investimento',
-'Relatorio Geral',
-'Relatorio de Despesas',
-'Relatorio de Receitas',
-'Relatorio de Investimentos'];
+export const cards = [
+  'Relatorio Geral',
+  'Relatorio de Despesas',
+  'Relatorio de Receitas',
+  'Relatorio de Investimentos',
+  'Cadastrar Categoria de Receita',
+  'Cadastrar Categoria de Despesa',
+  'Cadastrar Categoria de Investimento'
+];
 
 const Sidebar = () => {
   const [token, setToken] = useContext(UserContext);
 
   const handleLogout = () => {
-    setToken(null);
-  };
+      setToken(null);
+      };
 
   return (
-    <aside className="sidebar">
+    <div className="sidebar">
     <p className="menu-label">Menu</p>
     <ul className="menu-list">
       {cards.map((card, index) => (
         <li key={index}>{card}</li>
       ))}
-    </ul>
-    {token && (
-        <button className="button" onClick={handleLogout}>
-          Sair
+      <li>
+      {token && (
+        <button className="button" id="logout-button" onClick={handleLogout}>
+        Sair
         </button>
-      )}
-    </aside>
+        )}
+      </li>
+    </ul>
+    </div>
   );
 };
 

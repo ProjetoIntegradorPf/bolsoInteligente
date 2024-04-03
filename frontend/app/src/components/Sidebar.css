@@ -12,13 +12,16 @@
   }
   
   .menu-label {
+    color: black;
     font-weight: bold;
     margin-top: 20px; /* Adiciona um espaço acima do label */
   }
   
   .menu-list {
+    text-align: center;
     padding-left: 0;
     list-style: none;
+    font-weight: bold;
   }
   
   .menu-list li {
@@ -29,3 +32,11 @@
     background-color: #ccc; /* Cor de fundo ao passar o mouse */
   }
   
+  #logout-button {
+    position: absolute;
+    bottom: 10px;
+    width: 90%;
+    text-align: center;
+    background-color: black;
+    align-items: flex-end;
+  }

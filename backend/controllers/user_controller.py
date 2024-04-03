@@ -33,7 +33,7 @@ async def create_user(
     return await user_service.create_token(new_user)
 
 
-@router.post("/api/token")
+@router.post("/api/token", include_in_schema=False)
 async def generate_token(
     form_data: fastapi.security.OAuth2PasswordRequestForm = fastapi.Depends(),
     db: orm.Session = fastapi.Depends(get_db),

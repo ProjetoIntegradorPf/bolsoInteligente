@@ -1,23 +1,10 @@
-import React, { useContext } from "react";
-
-import { UserContext } from "../context/UserContext";
+import React from "react";
 
 const Header = ({ title }) => {
-  const [token, setToken] = useContext(UserContext);
-
-  const handleLogout = () => {
-    setToken(null);
-  };
-
-  return (
-    <div className="has-text-centered m-6">
+   return (
+    <header className="has-text-centered m-6 is-flex is-justify-content-center" id="header" >
       <h1 className="title">{title}</h1>
-      {token && (
-        <button className="button" onClick={handleLogout}>
-          Sair
-        </button>
-      )}
-    </div>
+    </header>
   );
 };
 

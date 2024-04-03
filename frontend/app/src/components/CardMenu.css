@@ -1,14 +1,17 @@
 .card {
-    background-color: #fff;
-    border: 5px solid #ddd;
-    border-radius: 5px;
-    padding: 20px;
-    margin: 10px;
-    transition: background-color 0.3s ease;
-    width: 100%; /* Define a largura do card para ocupar 100% da largura da coluna */
-  }
+  display: flex;
+  background-color: #fff;
+  border: 5px solid #ddd;
+  border-radius: 5px;
+  padding: 20px;
+  margin-left: 5%;
+  transition: background-color 0.3s ease;
+  width: 90%;
+  align-items: center;
+  justify-content: center;
+}
   
-  .card:hover {
-    background-color: #f9f9f9;
-  }
+.card:hover {
+  background-color: #f9f9f9;
+}
   

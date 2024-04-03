@@ -3,9 +3,12 @@ import React, { useContext, useEffect, useState } from "react";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import Header from "./components/Header";
-import Home from "./components/Home";
 
 import { UserContext } from "./context/UserContext";
+import BasePage from "./components/BasePage";
+import CardMenu from "./components/CardMenu";
+
+import { cards } from "./components/Sidebar";
 
 const App = () => {
   const [message, setMessage] = useState("");
@@ -34,20 +37,22 @@ const App = () => {
 
   return (
     <>
-      <div className="columns">
-        <div className="column"></div>
-        <div className="column m-5 is-two-thirds">
-          {!token ? (
+      {!token && <Header title={message} />}
+      {!token ? (
+        <div className="columns">
+          <div className="column"></div>
+          <div className="column m-5 is-two-thirds">
             <div className="columns">
-              <Header title={message} />
               <Register /> <Login />
             </div>
-          ) : (
-            <Home />
-          )}
+          </div>
+          <div className="column"></div>
         </div>
-        <div className="column"></div>
-      </div>
+      ) : (
+        <BasePage>
+          <CardMenu cards={cards} />
+        </BasePage>
+      )}
     </>
   );
 };
