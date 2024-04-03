@@ -6,14 +6,22 @@ from models.transaction_model import TransactionModel
 import schemas.transaction_schema as transaction_schema
 import schemas.user_schema as user_schema
 
-async def create_transaction(db: Session, user: user_schema.UserSchema, transaction: transaction_schema.TransactionCreateSchema):
+
+async def create_transaction(
+        db: Session,
+        user: user_schema.UserSchema,
+        transaction: transaction_schema.TransactionCreateSchema):
     transaction_db = TransactionModel(**transaction.dict(), owner_id=user.id)
     db.add(transaction_db)
     db.commit()
     db.refresh(transaction_db)
     return transaction_db
 
-async def get_transactions(db: Session, user: user_schema.UserSchema, filters: dict = None):
+
+async def get_transactions(
+        db: Session,
+        user: user_schema.UserSchema,
+        filters: dict = None):
     query = db.query(TransactionModel).filter_by(owner_id=user.id)
 
     if filters:
@@ -22,7 +30,11 @@ async def get_transactions(db: Session, user: user_schema.UserSchema, filters: d
 
     return query.all()
 
-async def get_transaction_by_id(db: Session, user: user_schema.UserSchema, transaction_id: int):
+
+async def get_transaction_by_id(
+        db: Session,
+        user: user_schema.UserSchema,
+        transaction_id: int):
     transaction = (
         db.query(TransactionModel)
         .filter_by(owner_id=user.id, id=transaction_id)
@@ -31,17 +43,26 @@ async def get_transaction_by_id(db: Session, user: user_schema.UserSchema, trans
 
     if not transaction:
         raise HTTPException(status_code=404, detail="Transaction not found")
-    
+
     return transaction
 
-async def delete_transaction(db: Session, user: user_schema.UserSchema, transaction_id: int):
+
+async def delete_transaction(
+        db: Session,
+        user: user_schema.UserSchema,
+        transaction_id: int):
     transaction = await get_transaction_by_id(db, user, transaction_id)
     db.delete(transaction)
     db.commit()
 
-async def update_transaction(db: Session, user: user_schema.UserSchema, transaction_id: int, transaction: transaction_schema.TransactionCreateSchema):
+
+async def update_transaction(
+        db: Session,
+        user: user_schema.UserSchema,
+        transaction_id: int,
+        transaction: transaction_schema.TransactionCreateSchema):
     transaction_db = await get_transaction_by_id(db, user, transaction_id)
-    
+
     transaction_db.description = transaction.description
     transaction_db.type = transaction.type
     transaction_db.value = transaction.value

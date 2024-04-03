@@ -4,6 +4,7 @@ import sqlalchemy.orm as orm
 import database
 import datetime
 
+
 class InvestmentModel(database.Base):
     __tablename__ = "investments"
     id = sql.Column(sql.Integer, primary_key=True, index=True)
@@ -18,9 +19,10 @@ class InvestmentModel(database.Base):
     date_created = sql.Column(sql.DateTime, default=datetime.datetime.now)
     date_last_updated = sql.Column(sql.DateTime, default=datetime.datetime.now)
 
-
     owner = orm.relationship("UserModel", back_populates="investments")
-    transactions = orm.relationship("TransactionModel", back_populates="category_investment")
+    transactions = orm.relationship(
+        "TransactionModel",
+        back_populates="category_investment")
 
     class Config:
         orm_mode = True

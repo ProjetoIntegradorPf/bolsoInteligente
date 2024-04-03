@@ -5,7 +5,6 @@ import database
 import datetime
 
 
-
 class ExpenseModel(database.Base):
     __tablename__ = "expenses"
 
@@ -17,7 +16,9 @@ class ExpenseModel(database.Base):
     user_id = sql.Column(sql.Integer, sql.ForeignKey("users.id"))
 
     owner = orm.relationship("UserModel", back_populates="expenses")
-    transactions = orm.relationship("TransactionModel", back_populates="category_expense")
+    transactions = orm.relationship(
+        "TransactionModel",
+        back_populates="category_expense")
 
     class Config:
         orm_mode = True

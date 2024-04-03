@@ -3,10 +3,12 @@ from enum import Enum
 from datetime import datetime
 from typing import Optional
 
+
 class TransactionType(str, Enum):
     expense = "DESPESA"
     revenue = "RECEITA"
     investment = "INVESTIMENTO"
+
 
 class TransactionCreateSchema(BaseModel):
     description: str
@@ -25,4 +27,3 @@ class TransactionSchema(TransactionCreateSchema):
     class Config:
         orm_mode = True
         from_attributes = True
-

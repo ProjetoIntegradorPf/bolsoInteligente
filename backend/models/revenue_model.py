@@ -17,7 +17,9 @@ class RevenueModel(database.Base):
     user_id = sql.Column(sql.Integer, sql.ForeignKey("users.id"))
 
     owner = orm.relationship("UserModel", back_populates="revenues")
-    transactions = orm.relationship("TransactionModel", back_populates="category_revenue")
+    transactions = orm.relationship(
+        "TransactionModel",
+        back_populates="category_revenue")
 
     class Config:
         orm_mode = True

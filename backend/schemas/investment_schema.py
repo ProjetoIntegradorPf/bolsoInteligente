@@ -1,6 +1,7 @@
 import pydantic
 from datetime import date, datetime
 
+
 class InvestmentBase(pydantic.BaseModel):
     user_id: int
     description: str
@@ -11,8 +12,10 @@ class InvestmentBase(pydantic.BaseModel):
     annual_return_rate: float
     monthly_return_rate: float
 
+
 class InvestmentCreateSchema(InvestmentBase):
     pass
+
 
 class InvestmentSchema(InvestmentBase):
     id: int
@@ -21,4 +24,4 @@ class InvestmentSchema(InvestmentBase):
 
     class Config:
         orm_mode = True
-        from_attributes=True
+        from_attributes = True

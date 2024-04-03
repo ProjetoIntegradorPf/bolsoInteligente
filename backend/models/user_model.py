@@ -7,6 +7,7 @@ import database
 
 import datetime
 
+
 class UserModel(database.Base):
     __tablename__ = "users"
     id = sql.Column(sql.Integer, primary_key=True, index=True)
@@ -18,15 +19,26 @@ class UserModel(database.Base):
     date_last_updated = sql.Column(sql.DateTime, default=datetime.datetime.now)
     hashed_password = sql.Column(sql.String)
 
-    transactions = orm.relationship("TransactionModel", back_populates="owner", cascade="all, delete")
-    expenses = orm.relationship("ExpenseModel", back_populates="owner", cascade="all, delete")
-    revenues = orm.relationship("RevenueModel", back_populates="owner", cascade="all, delete")
-    investments = orm.relationship("InvestmentModel", back_populates="owner", cascade="all, delete")
-
+    transactions = orm.relationship(
+        "TransactionModel",
+        back_populates="owner",
+        cascade="all, delete")
+    expenses = orm.relationship(
+        "ExpenseModel",
+        back_populates="owner",
+        cascade="all, delete")
+    revenues = orm.relationship(
+        "RevenueModel",
+        back_populates="owner",
+        cascade="all, delete")
+    investments = orm.relationship(
+        "InvestmentModel",
+        back_populates="owner",
+        cascade="all, delete")
 
     def verify_password(self, password: str):
         return hash.bcrypt.verify(password, self.hashed_password)
-    
+
     class Config:
         orm_mode = True
         from_attributes = True

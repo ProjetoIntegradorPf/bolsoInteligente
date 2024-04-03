@@ -5,6 +5,7 @@ import database
 
 import datetime
 
+
 class TransactionModel(database.Base):
     __tablename__ = "transactions"
     id = sql.Column(sql.Integer, primary_key=True, index=True)
@@ -15,14 +16,25 @@ class TransactionModel(database.Base):
     date_created = sql.Column(sql.DateTime, default=datetime.datetime.now)
     date_last_updated = sql.Column(sql.DateTime, default=datetime.datetime.now)
     owner = orm.relationship("UserModel", back_populates="transactions")
-    category_expense_id = sql.Column(sql.Integer, sql.ForeignKey("expenses.id"))
-    category_revenue_id = sql.Column(sql.Integer, sql.ForeignKey("revenues.id"))
-    category_investment_id = sql.Column(sql.Integer, sql.ForeignKey("investments.id"))
+    category_expense_id = sql.Column(
+        sql.Integer, sql.ForeignKey("expenses.id"))
+    category_revenue_id = sql.Column(
+        sql.Integer, sql.ForeignKey("revenues.id"))
+    category_investment_id = sql.Column(
+        sql.Integer, sql.ForeignKey("investments.id"))
 
-    category_expense = orm.relationship("ExpenseModel", back_populates="transactions", cascade="all, delete")
-    category_revenue = orm.relationship("RevenueModel", back_populates="transactions", cascade="all, delete")
-    category_investment = orm.relationship("InvestmentModel", back_populates="transactions", cascade="all, delete")
-
+    category_expense = orm.relationship(
+        "ExpenseModel",
+        back_populates="transactions",
+        cascade="all, delete")
+    category_revenue = orm.relationship(
+        "RevenueModel",
+        back_populates="transactions",
+        cascade="all, delete")
+    category_investment = orm.relationship(
+        "InvestmentModel",
+        back_populates="transactions",
+        cascade="all, delete")
 
     class Config:
         orm_mode = True

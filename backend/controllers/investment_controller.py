@@ -16,19 +16,24 @@ import services.user_service as user_service
 
 router = fastapi.APIRouter()
 
-@router.post("/api/investments", response_model=investment_schema.InvestmentSchema)
+
+@router.post("/api/investments",
+             response_model=investment_schema.InvestmentSchema)
 async def cretae_investment(
-    investment: investment_schema.InvestmentCreateSchema,
-    user:  user_model.UserModel = fastapi.Depends(user_service.get_current_user),
+        investment: investment_schema.InvestmentCreateSchema,
+        user: user_model.UserModel = fastapi.Depends(
+            user_service.get_current_user),
     db: orm.Session = fastapi.Depends(get_db),
 ):
     print(investment)
     return await investment_service.create_investment(user=user, db=db, investment=investment)
 
 
-@router.get("/api/investments", response_model=List[investment_schema.InvestmentSchema])
+@router.get("/api/investments",
+            response_model=List[investment_schema.InvestmentSchema])
 async def get_investments(
-    user:  user_model.UserModel = fastapi.Depends(user_service.get_current_user),
+        user: user_model.UserModel = fastapi.Depends(
+            user_service.get_current_user),
     db: orm.Session = fastapi.Depends(get_db),
     description: str = fastapi.Query(None),
 ):
@@ -39,11 +44,11 @@ async def get_investments(
     return await investment_service.get_investments(user=user, db=db, filters=filters)
 
 
-
 @router.get("/api/investments/{investment_id}", status_code=200)
 async def get_investment_by_id(
-    investment_id: int,
-    user:  user_model.UserModel = fastapi.Depends(user_service.get_current_user),
+        investment_id: int,
+        user: user_model.UserModel = fastapi.Depends(
+            user_service.get_current_user),
     db: orm.Session = fastapi.Depends(get_db),
 ):
     return await investment_service.get_investment_by_id(investment_id, user, db)
@@ -51,8 +56,9 @@ async def get_investment_by_id(
 
 @router.delete("/api/investments/{investment_id}", status_code=204)
 async def delete_investment(
-    investment_id: int,
-    user:  user_model.UserModel = fastapi.Depends(user_service.get_current_user),
+        investment_id: int,
+        user: user_model.UserModel = fastapi.Depends(
+            user_service.get_current_user),
     db: orm.Session = fastapi.Depends(get_db),
 ):
     await investment_service.delete_investment(investment_id, user, db)
@@ -61,11 +67,11 @@ async def delete_investment(
 
 @router.put("/api/investments/{investment_id}", status_code=200)
 async def update_investment(
-    investment_id: int,
-    investment: investment_schema.InvestmentCreateSchema,
-    user:  user_model.UserModel = fastapi.Depends(user_service.get_current_user),
+        investment_id: int,
+        investment: investment_schema.InvestmentCreateSchema,
+        user: user_model.UserModel = fastapi.Depends(
+            user_service.get_current_user),
     db: orm.Session = fastapi.Depends(get_db),
 ):
     await investment_service.update_investment(investment_id, investment, user, db)
     return {"message", "Successfully Updated"}
-

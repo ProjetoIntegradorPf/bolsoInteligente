@@ -7,7 +7,7 @@ class ExpenseBase(BaseModel):
 
 
 class ExpenseCreateSchema(ExpenseBase):
-    
+
     pass
 
 
@@ -17,5 +17,4 @@ class ExpenseSchema(ExpenseBase):
 
     class Config:
         orm_mode = True
-        from_attributes=True
-
+        from_attributes = True

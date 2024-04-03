@@ -12,6 +12,7 @@ oauth2schema = fastapi.security.OAuth2PasswordBearer(tokenUrl="/api/token")
 
 JWT_SECRET = "myjwtsecret"
 
+
 async def get_user_by_email(email: str, db: orm.Session):
     return db.query(UserModel).filter(UserModel.email == email).first()
 
@@ -28,6 +29,7 @@ async def create_user(user: user_schema.UserCreateSchema, db: orm.Session):
     db.commit()
     db.refresh(user_obj)
     return user_obj
+
 
 async def authenticate_user(email: str, password: str, db: orm.Session):
     user = await get_user_by_email(db=db, email=email)
@@ -46,6 +48,7 @@ async def create_token(user: UserModel):
     token = _jwt.encode(user_obj.dict(exclude={"date_of_birth"}), JWT_SECRET)
     return dict(access_token=token, token_type="bearer")
 
+
 async def get_current_user(
     db: orm.Session = fastapi.Depends(database.get_db),
     token: str = fastapi.Depends(oauth2schema),
@@ -53,7 +56,7 @@ async def get_current_user(
     try:
         payload = _jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
         user = db.query(UserModel).get(payload["id"])
-    except:
+    except BaseException:
         raise fastapi.HTTPException(
             status_code=401, detail="Invalid Email or Password"
         )
