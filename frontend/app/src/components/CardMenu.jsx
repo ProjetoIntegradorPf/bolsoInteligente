@@ -1,5 +1,15 @@
 import React from 'react';
 
+const cards = [
+	'Relatorio Geral', //TODO esse cara vai estar na minha lista e deve estar clicavel, e ao clicar deve encaminhar para a tela do componente table
+	'Relatorio de Despesas',
+	'Relatorio de Receitas',
+	'Relatorio de Investimentos',
+	'Cadastrar Categoria de Receita',
+	'Cadastrar Categoria de Despesa',
+	'Cadastrar Categoria de Investimento'
+];
+
 const CardMenu = ({ cards }) => {
 	return (
 		<div className="columns is-multiline is-centered" style={{ paddingLeft: '20%' }}>

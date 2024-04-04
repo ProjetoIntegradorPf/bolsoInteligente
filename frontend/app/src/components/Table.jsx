@@ -71,9 +71,6 @@ const Table = () => {
 				id={id}
 				setErrorMessage={setErrorMessage}
 			/>
-			<button className="button is-fullwidth mb-5 is-primary" onClick={() => setActiveModal(true)}>
-				Criar uma transação
-			</button>
 			<ErrorMessage message={errorMessage} />
 			{loaded ? (
 				transactions.length > 0 ? (
@@ -122,6 +119,11 @@ const Table = () => {
 			) : (
 				<p>Carregando...</p>
 			)}
+			<div className="buttons is-centered">
+				<button className="button is-primary is-centered" onClick={() => setActiveModal(true)}>
+					Criar uma transação
+				</button>
+			</div>
 		</>
 	);
 };

@@ -32,11 +32,11 @@ const BasePage = ({ children }) => {
 	}, []);
 
 	return (
-		<div>
+		<>
 			<Sidebar />
 			<main>{children}</main>
 			<Footer />
-		</div>
+		</>
 	);
 };
 

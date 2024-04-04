@@ -8,7 +8,15 @@ import { UserContext } from './context/UserContext';
 import BasePage from './components/BasePage';
 import CardMenu from './components/CardMenu';
 
-import { cards } from './components/Sidebar';
+const cards = [
+	'Relatorio Geral',
+	'Relatorio de Despesas',
+	'Relatorio de Receitas',
+	'Relatorio de Investimentos',
+	'Cadastrar Categoria de Receita',
+	'Cadastrar Categoria de Despesa',
+	'Cadastrar Categoria de Investimento'
+];
 
 const App = () => {
 	const [message, setMessage] = useState('');

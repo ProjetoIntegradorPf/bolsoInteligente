@@ -3,19 +3,24 @@ import './Sidebar.css';
 import React, { useContext } from 'react';
 
 import { UserContext } from '../context/UserContext';
-
-export const cards = [
-	'Relatorio Geral',
-	'Relatorio de Despesas',
-	'Relatorio de Receitas',
-	'Relatorio de Investimentos',
-	'Cadastrar Categoria de Receita',
-	'Cadastrar Categoria de Despesa',
-	'Cadastrar Categoria de Investimento'
-];
+import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
 	const [token, setToken] = useContext(UserContext);
+
+	const navigateToComponent = (component) => {
+		window.location.href = `/${component}`;
+	};
+
+	const cards = [
+		{ name: 'Relatorio Geral', component: 'relatorio-geral' },
+		{ name: 'Relatorio de Despesas', component: 'despesas' },
+		{ name: 'Relatorio de Receitas', component: 'receitas' },
+		{ name: 'Relatorio de Investimentos', component: 'investimentos' },
+		{ name: 'Cadastrar Categoria de Receita', component: 'categoria-receita' },
+		{ name: 'Cadastrar Categoria de Despesa', component: 'categoria-despesa' },
+		{ name: 'Cadastrar Categoria de Investimento', component: 'categoria-investimento' }
+	];
 
 	const handleLogout = () => {
 		setToken(null);
@@ -25,8 +30,11 @@ const Sidebar = () => {
 		<div className="sidebar">
 			<p className="menu-label">Menu</p>
 			<ul className="menu-list">
-				{cards.map((card, index) => (
-					<li key={index}>{card}</li>
+				{cards.map(({ name, component }) => (
+					<li>
+						{' '}
+						<Link to={`/${component}`}>{name}</Link>
+					</li>
 				))}
 				<li>
 					{token && (
