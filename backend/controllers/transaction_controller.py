@@ -26,8 +26,12 @@ async def create_transaction(
             user_service.get_current_user),
     db: orm.Session = fastapi.Depends(get_db),
 ):
-    print(transaction)
-    return await transaction_service.create_transaction(user=user, db=db, transaction=transaction)
+    try:
+        return await transaction_service.create_transaction(user=user, db=db, transaction=transaction)
+    except Exception as e:
+        raise fastapi.HTTPException(
+            status_code=fastapi.status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(e))
 
 
 @router.get("/api/transactions",
@@ -56,9 +60,9 @@ async def get_transaction_by_id(
         transaction_id: int,
         user: user_schema.UserSchema = fastapi.Depends(
             user_service.get_current_user),
-    db: orm.Session = fastapi.Depends(get_db),
+        db: orm.Session = fastapi.Depends(get_db)
 ):
-    return await transaction_service.get_transaction_by_id(transaction_id, user, db)
+    return await transaction_service.get_transaction_by_id(db, user, transaction_id)
 
 
 @router.delete("/api/transactions/{transaction_id}", status_code=204)
@@ -80,5 +84,5 @@ async def update_transaction(
             user_service.get_current_user),
     db: orm.Session = fastapi.Depends(get_db),
 ):
-    await transaction_service.update_transaction(transaction_id, transaction, user, db)
+    await transaction_service.update_transaction(db, user, transaction_id, transaction)
     return {"message", "Successfully Updated"}

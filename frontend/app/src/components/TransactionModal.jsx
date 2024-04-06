@@ -3,112 +3,185 @@ import React, { useEffect, useState } from 'react';
 const TransactionModal = ({ active, handleModal, token, id, setErrorMessage }) => {
 	const [description, setDescription] = useState('');
 	const [type, setType] = useState('');
+	const [categoryId, setCategoryId] = useState('');
+	const [categories, setCategories] = useState([]);
 	const [value, setValue] = useState('');
 	const [error, setError] = useState('');
+	const [selectedCategory, setSelectedCategory] = useState('');
 
 	useEffect(() => {
 		const getTransaction = async () => {
+			if (id) {
+				const requestOptions = {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: 'Bearer ' + token
+					}
+				};
+				try {
+					const response = await fetch(`/api/transactions/${id}`, requestOptions);
+					if (!response.ok) {
+						setErrorMessage('Não foi possivel carregar a transação');
+						return;
+					}
+					const data = await response.json();
+					setDescription(data.description);
+					setType(data.type);
+					setCategoryId(data[`category_${data.type.toLowerCase()}_id`]);
+					setValue(data.value.toFixed(2));
+				} catch (error) {
+					setErrorMessage('Não foi possivel carregar a transação');
+				}
+			}
+		};
+
+		getTransaction();
+	}, [id, token, setErrorMessage]);
+
+	useEffect(() => {
+		const listCategoriesByType = async () => {
+			let url;
+			switch (type) {
+				case 'RECEITA':
+					url = '/api/revenues';
+					break;
+				case 'DESPESA':
+					url = '/api/expenses';
+					break;
+				case 'INVESTIMENTO':
+					url = '/api/investments';
+					break;
+				default:
+					console.error('Tipo de categoria inválido');
+					return;
+			}
+
 			const requestOptions = {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
-					Authorization: 'Bearer ' + token
+					Authorization: token ? `Bearer ${token}` : undefined
 				}
 			};
-			const response = await fetch(`/api/transactions/${id}`, requestOptions);
 
-			if (!response.ok) {
-				setErrorMessage('Could not get the transaction');
-			} else {
-				const data = await response.json();
-				setDescription(data.description);
-				setType(data.type);
-				setValue(data.value.toFixed(2));
+			try {
+				const response = await fetch(url, requestOptions);
+				if (response.ok) {
+					const data = await response.json();
+					setCategories(data);
+				} else {
+					console.error(`Erro ao listar categorias do tipo ${type}`);
+				}
+			} catch (error) {
+				console.error(`Erro ao listar categorias do tipo ${type}:`, error.message);
 			}
 		};
 
-		if (id) {
-			getTransaction();
+		if (type) {
+			listCategoriesByType();
 		}
-	}, [id, token]);
+	}, [type, token]);
 
 	const cleanFormData = () => {
 		setDescription('');
 		setType('');
+		setCategoryId('');
+		setSelectedCategory('');
 		setValue('');
 		setError('');
 	};
 
 	const handleCreateTransaction = async (e) => {
-		cleanFormData();
-		e?.preventDefault();
-		if (!description && !type && !value) {
+		e.preventDefault();
+		if (!description || !type || !selectedCategory || !value) {
 			setError('Por favor, preencha todos os campos.');
 			return;
 		}
-		if (type !== 'CREDITO' && type !== 'DEBITO') {
-			setError('Por favor, selecione o tipo de transação.');
+		if (!['RECEITA', 'DESPESA', 'INVESTIMENTO'].includes(type)) {
+			setError('Por favor, selecione o tipo da transação.');
 			return;
 		}
-		if (Number(value) === 0) {
-			setError('O valor não pode ser zero.');
+
+		const formattedValue = parseFloat(value.replace(',', '.')) || 0;
+		if (formattedValue === 0) {
+			setError('Valor não pode ser zero.');
 			return;
 		}
-		const formattedValue = parseFloat(value.replace(',', '.'));
+		const [categoryId, categoryName] = selectedCategory.split(',');
+		const newType = type === 'INVESTIMENTO' ? 'investment' : type === 'DESPESA' ? 'expense' : 'revenue';
+		const body = {
+			description: description,
+			type: type,
+			[`category_${newType}_id`]: parseInt(categoryId),
+			[`category_${newType}_name`]: categoryName,
+			value: formattedValue
+		};
+		console.log(body);
 		const requestOptions = {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: 'Bearer ' + token
+				Authorization: `Bearer ${token}`
 			},
-			body: JSON.stringify({
-				description: description,
-				type: type,
-				value: formattedValue
-			})
+			body: JSON.stringify(body)
 		};
-		const response = await fetch('/api/transactions', requestOptions);
-		if (!response.ok) {
-			setError('Algo deu errado na criação');
-		} else {
-			cleanFormData();
-			handleModal();
+		try {
+			console.log(requestOptions);
+			const response = await fetch('/api/transactions', requestOptions);
+			if (!response.ok) {
+				setError('Algo deu errado. Por favor, tente novamente');
+			} else {
+				cleanFormData();
+				handleModal();
+			}
+		} catch (error) {
+			setError('Algo deu errado. Por favor, tente novamente');
 		}
 	};
 
 	const handleUpdateTransaction = async (e) => {
-		e?.preventDefault();
-		if (!description && !type && !value) {
+		e.preventDefault();
+		if (!description || !type || !selectedCategory || !value) {
 			setError('Por favor, preencha todos os campos.');
 			return;
 		}
-		if (type !== 'CREDITO' && type !== 'DEBITO') {
-			setError('Por favor, selecione o tipo de transação.');
+		if (!['RECEITA', 'DESPESA', 'INVESTIMENTO'].includes(type)) {
+			setError('Por favor, selecione o tipo da transação.');
 			return;
 		}
-		if (Number(value) === 0) {
-			setError('O valor não pode ser zero.');
+		const formattedValue = parseFloat(value.replace(',', '.')) || 0;
+		if (formattedValue === 0) {
+			setError('Valor não pode ser zero.');
 			return;
 		}
-		const formattedValue = parseFloat(value.replace(',', '.'));
+		const newType = type === 'INVESTIMENTO' ? 'investment' : type === 'DESPESA' ? 'expense' : 'revenue';
+		const [categoryId, categoryName] = selectedCategory.split(',');
+		const body = {
+			description: description,
+			type: type,
+			[`category_${newType}_id`]: parseInt(categoryId),
+			[`category_${newType}_name`]: categoryName,
+			value: formattedValue
+		};
 		const requestOptions = {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: 'Bearer ' + token
+				Authorization: `Bearer ${token}`
 			},
-			body: JSON.stringify({
-				description: description,
-				type: type,
-				value: formattedValue
-			})
+			body: JSON.stringify(body)
 		};
-		const response = await fetch(`/api/transactions/${id}`, requestOptions);
-		if (!response.ok) {
-			setError('Algo deu errado na atualizaçãon');
-		} else {
-			cleanFormData();
-			handleModal();
+		try {
+			const response = await fetch(`/api/transactions/${id}`, requestOptions);
+			if (!response.ok) {
+				setError('Alguma coisa deu errado durante a atualização.');
+			} else {
+				cleanFormData();
+				handleModal();
+			}
+		} catch (error) {
+			setError('Alguma coisa deu errado durante a atualização.');
 		}
 	};
 
@@ -141,8 +214,28 @@ const TransactionModal = ({ active, handleModal, token, id, setErrorMessage }) =
 								<div className="select is-fullwidth">
 									<select value={type} onChange={(e) => setType(e.target.value)} required>
 										<option value="">Selecione</option>
-										<option value="CREDITO">Crédito</option>
-										<option value="DEBITO">Débito</option>
+										<option value="RECEITA">RECEITA</option>
+										<option value="DESPESA">DESPESA</option>
+										<option value="INVESTIMENTO">INVESTIMENTO</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div className="field">
+							<label className="label">Categoria</label>
+							<div className="control">
+								<div className="select is-fullwidth">
+									<select
+										value={selectedCategory}
+										onChange={(e) => setSelectedCategory(e.target.value)}
+										required
+									>
+										<option value="">Selecione</option>
+										{categories.map((category) => (
+											<option key={category.id} value={`${category.id},${category.name}`}>
+												{category.name}
+											</option>
+										))}
 									</select>
 								</div>
 							</div>
@@ -173,23 +266,11 @@ const TransactionModal = ({ active, handleModal, token, id, setErrorMessage }) =
 							Atualizar
 						</button>
 					) : (
-						<button
-							className="button is-primary"
-							onClick={() => {
-								cleanFormData();
-								handleCreateTransaction();
-							}}
-						>
+						<button className="button is-primary" onClick={handleCreateTransaction}>
 							Criar
 						</button>
 					)}
-					<button
-						className="button"
-						onClick={() => {
-							cleanFormData();
-							handleModal();
-						}}
-					>
+					<button className="button" onClick={handleModal}>
 						Cancelar
 					</button>
 				</footer>

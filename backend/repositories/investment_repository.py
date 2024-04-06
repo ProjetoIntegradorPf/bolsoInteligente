@@ -22,7 +22,7 @@ async def get_investments(
         db: Session,
         user: user_schema.UserSchema,
         filters: dict = None):
-    query = db.query(InvestmentModel).filter_by(owner_id=user.id)
+    query = db.query(InvestmentModel).filter_by(user_id=user.id)
 
     if filters:
         for field, value in filters.items():

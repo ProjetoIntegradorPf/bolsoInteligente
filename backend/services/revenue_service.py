@@ -36,7 +36,7 @@ async def delete_revenue(
         db: Session,
         user: user_schema.UserSchema,
         revenue_id: int):
-    transactions = await get_transactions(db, user, {"revenue_id": revenue_id})
+    transactions = await get_transactions(db, user, {"category_revenue_id": revenue_id})
     if transactions:
         raise HTTPException(
             status_code=400,

@@ -41,7 +41,8 @@ async def delete_expense(
         db: Session,
         user: user_schema.UserSchema,
         expense_id: int):
-    transactions = await get_transactions(db, user, {"expense_id": expense_id})
+    print(await get_transactions(db, user, {"category_expense_id": expense_id}))
+    transactions = await get_transactions(db, user, {"category_expense_id": expense_id})
     if transactions:
         raise fastapi.HTTPException(
             status_code=400,

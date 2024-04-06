@@ -17,6 +17,9 @@ class TransactionCreateSchema(BaseModel):
     category_expense_id: Optional[int] = None
     category_revenue_id: Optional[int] = None
     category_investment_id: Optional[int] = None
+    category_expense_name: Optional[str] = ''
+    category_revenue_name: Optional[str] = ''
+    category_investment_name: Optional[str] = ''
 
 
 class TransactionSchema(TransactionCreateSchema):

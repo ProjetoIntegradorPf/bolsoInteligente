@@ -1,4 +1,3 @@
-import Header from './Header';
 import Footer from './Footer';
 import Sidebar from './Sidebar';
 
@@ -21,7 +20,7 @@ const BasePage = ({ children }) => {
 		const data = await response.json();
 
 		if (!response.ok) {
-			console.log('something messed up');
+			console.log('Algo deu errado');
 		} else {
 			setMessage(data.message);
 		}
@@ -32,11 +31,13 @@ const BasePage = ({ children }) => {
 	}, []);
 
 	return (
-		<>
-			<Sidebar />
-			<main>{children}</main>
+		<div className="columns">
+			<div className="column is-one-quarter">
+				<Sidebar />
+			</div>
+			<main className="column is-two-quarters">{children}</main>
 			<Footer />
-		</>
+		</div>
 	);
 };
 

@@ -8,10 +8,6 @@ import { Link } from 'react-router-dom';
 const Sidebar = () => {
 	const [token, setToken] = useContext(UserContext);
 
-	const navigateToComponent = (component) => {
-		window.location.href = `/${component}`;
-	};
-
 	const cards = [
 		{ name: 'Relatorio Geral', component: 'relatorio-geral' },
 		{ name: 'Relatorio de Despesas', component: 'despesas' },
@@ -27,24 +23,26 @@ const Sidebar = () => {
 	};
 
 	return (
-		<div className="sidebar">
-			<p className="menu-label">Menu</p>
-			<ul className="menu-list">
-				{cards.map(({ name, component }) => (
+		<>
+			<aside className="sidebar">
+				<p className="menu-label">Menu</p>
+				<ul className="menu-list">
+					{cards.map(({ name, component }) => (
+						<li>
+							{' '}
+							<Link to={`/${component}`}>{name}</Link>
+						</li>
+					))}
 					<li>
-						{' '}
-						<Link to={`/${component}`}>{name}</Link>
+						{token && (
+							<button className="button" id="logout-button" onClick={handleLogout}>
+								Sair
+							</button>
+						)}
 					</li>
-				))}
-				<li>
-					{token && (
-						<button className="button" id="logout-button" onClick={handleLogout}>
-							Sair
-						</button>
-					)}
-				</li>
-			</ul>
-		</div>
+				</ul>
+			</aside>
+		</>
 	);
 };
 

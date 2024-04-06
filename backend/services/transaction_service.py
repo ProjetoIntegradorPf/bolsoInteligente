@@ -37,10 +37,11 @@ async def get_transaction_by_id(
 
 
 async def delete_transaction(
-        db: Session,
-        user: user_schema.UserSchema,
-        transaction_id: int):
-    return await transaction_repository.delete_transaction(db, user, transaction_id)
+    transaction_id: int,
+    user: user_schema.UserSchema,
+    db: Session,
+):
+    return await transaction_repository.delete_transaction(transaction_id, user, db)
 
 
 async def update_transaction(

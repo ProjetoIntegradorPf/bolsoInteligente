@@ -48,9 +48,10 @@ async def get_transaction_by_id(
 
 
 async def delete_transaction(
-        db: Session,
-        user: user_schema.UserSchema,
-        transaction_id: int):
+    transaction_id: int,
+    user: user_schema.UserSchema,
+    db: Session
+):
     transaction = await get_transaction_by_id(db, user, transaction_id)
     db.delete(transaction)
     db.commit()
@@ -74,6 +75,13 @@ async def update_transaction(
         transaction_db.category_revenue_id = transaction.category_revenue_id
     if transaction.category_investment_id:
         transaction_db.category_investment_id = transaction.category_investment_id
+
+    if transaction.category_expense_name:
+        transaction_db.category_expense_name = transaction.category_expense_name
+    if transaction.category_revenue_name:
+        transaction_db.category_revenue_name = transaction.category_revenue_name
+    if transaction.category_investment_name:
+        transaction_db.category_investment_name = transaction.category_investment_name
 
     db.commit()
     db.refresh(transaction_db)

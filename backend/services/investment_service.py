@@ -40,7 +40,7 @@ async def delete_investment(
         db: Session,
         user: user_schema.UserSchema,
         investment_id: int):
-    transactions = await get_transactions(db, user, {"investment_id": investment_id})
+    transactions = await get_transactions(db, user, {"category_investment_id": investment_id})
     if transactions:
         raise fastapi.HTTPException(
             status_code=400,
