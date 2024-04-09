@@ -1,5 +1,5 @@
 import Footer from './Footer';
-import Sidebar from './Sidebar';
+import Header from './Header';
 
 import React, { useContext, useEffect, useState } from 'react';
 
@@ -31,11 +31,10 @@ const BasePage = ({ children }) => {
 	}, []);
 
 	return (
-		<div className="columns">
-			<div className="column is-one-quarter">
-				<Sidebar />
-			</div>
-			<main className="column is-two-quarters">{children}</main>
+		<div>
+			{}
+			<Header title={message} />
+			<main className="column">{children}</main>
 			<Footer />
 		</div>
 	);

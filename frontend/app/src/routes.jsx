@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 import App from './App';
 import Table from './components/Table';
@@ -8,11 +8,10 @@ import BasePage from './components/BasePage';
 import RevenueCategory from './components/RevenueCategory';
 
 function MainRoutes() {
-	const navigate = useNavigate();
-
 	return (
 		<Routes>
 			<Route path="/" element={<App />} />
+			<Route path="/home" element={<App />} />
 			<Route
 				path="/relatorio-geral"
 				element={

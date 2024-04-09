@@ -74,9 +74,9 @@ const ExpenseCategory = () => {
 			<ErrorMessage message={errorMessage} />
 			{loaded ? (
 				expenses.length > 0 ? (
-					<table className="table is-fullwidth">
+					<table className="table is-bordered is-fullwidth is-hoverable">
 						<thead>
-							<tr>
+							<tr className="is-dark">
 								<th>ID</th>
 								<th>Name</th>
 								<th>Descrição</th>

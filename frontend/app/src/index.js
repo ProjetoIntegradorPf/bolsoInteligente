@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import 'bulma/css/bulma.min.css';
 import App from './App';
-import { BrowserRouter as Router } from 'react-router-dom'; // Importe o BrowserRouter
-import MainRoutes from './routes'; // Importe suas rotas
+import { BrowserRouter as Router } from 'react-router-dom';
+import MainRoutes from './routes';
 
 import { UserProvider } from './context/UserContext';
 

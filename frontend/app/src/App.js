@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Importe o hook useNavigate
 
 import Register from './components/Register';
 import Login from './components/Login';
@@ -8,19 +9,10 @@ import { UserContext } from './context/UserContext';
 import BasePage from './components/BasePage';
 import CardMenu from './components/CardMenu';
 
-const cards = [
-	'Relatorio Geral',
-	'Relatorio de Despesas',
-	'Relatorio de Receitas',
-	'Relatorio de Investimentos',
-	'Cadastrar Categoria de Receita',
-	'Cadastrar Categoria de Despesa',
-	'Cadastrar Categoria de Investimento'
-];
-
 const App = () => {
 	const [message, setMessage] = useState('');
 	const [token] = useContext(UserContext);
+	const navigate = useNavigate();
 
 	const getWelcomeMessage = async () => {
 		const requestOptions = {
@@ -43,6 +35,12 @@ const App = () => {
 		getWelcomeMessage();
 	}, []);
 
+	useEffect(() => {
+		if (token && window.location.pathname === '/') {
+			navigate('/home');
+		}
+	}, [token, navigate]);
+
 	return (
 		<>
 			{!token && <Header title={message} />}
@@ -58,7 +56,7 @@ const App = () => {
 				</div>
 			) : (
 				<BasePage>
-					<CardMenu cards={cards} />
+					<CardMenu />
 				</BasePage>
 			)}
 		</>

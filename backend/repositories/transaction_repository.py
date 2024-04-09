@@ -1,6 +1,7 @@
 import datetime
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
+from datetime import datetime
 
 from models.transaction_model import TransactionModel
 import schemas.transaction_schema as transaction_schema
@@ -22,11 +23,51 @@ async def get_transactions(
         db: Session,
         user: user_schema.UserSchema,
         filters: dict = None):
+    if filters is None:
+        filters = {}
+
     query = db.query(TransactionModel).filter_by(owner_id=user.id)
 
-    if filters:
-        for field, value in filters.items():
-            query = query.filter(getattr(TransactionModel, field) == value)
+    start_date = filters.get("start_date")
+    end_date = filters.get("end_date")
+
+    if start_date is not None and end_date is not None:
+        try:
+            datetime.strptime(start_date, "%Y-%m-%d")
+            datetime.strptime(end_date, "%Y-%m-%d")
+            query = query.filter(
+                TransactionModel.date.between(start_date, end_date))
+        except ValueError:
+            raise HTTPException(
+                status_code=400, detail="Invalid date format. Should be YYYY-MM-DD")
+        finally:
+            filters.pop("start_date", None)
+            filters.pop("end_date", None)
+
+    if start_date is not None:
+        try:
+            datetime.strptime(start_date, "%Y-%m-%d")
+            query = query.filter(TransactionModel.date >= start_date)
+        except ValueError:
+            raise HTTPException(
+                status_code=400, detail="Invalid date format. Should be YYYY-MM-DD")
+        finally:
+            filters.pop("start_date", None)
+
+    if end_date is not None:
+        try:
+            datetime.strptime(end_date, "%Y-%m-%d")
+            query = query.filter(TransactionModel.date <= end_date)
+        except ValueError:
+            raise HTTPException(
+                status_code=400, detail="Invalid date format. Should be YYYY-MM-DD")
+        finally:
+            filters.pop("end_date", None)
+
+    for field, value in filters.items():
+        if hasattr(TransactionModel, field):
+            query = query.filter(
+                getattr(TransactionModel, field).contains(value))
 
     return query.all()
 
@@ -67,7 +108,8 @@ async def update_transaction(
     transaction_db.description = transaction.description
     transaction_db.type = transaction.type
     transaction_db.value = transaction.value
-    transaction_db.date_last_updated = datetime.datetime.now()
+    transaction_db.date = transaction.date
+    transaction_db.date_last_updated = datetime.now()
 
     if transaction.category_expense_id:
         transaction_db.category_expense_id = transaction.category_expense_id

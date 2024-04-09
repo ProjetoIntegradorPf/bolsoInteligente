@@ -1,10 +1,17 @@
 import React from 'react';
+import Navbar from './Navbar';
+import bolsoInteligente from './bolsoInteligente.png';
 
 const Header = ({ title }) => {
+	const currentPath = location.pathname;
+
 	return (
-		<header className="has-text-centered m-6 is-flex is-justify-content-center" id="header">
-			<h1 className="title">{title}</h1>
-		</header>
+		<>
+			<header className="has-text-whight-bold m-3 is-flex is-justify-content-center is-fixed-top">
+				<img src={bolsoInteligente} alt="logo" width="300" />
+			</header>
+			{currentPath !== '/' && <Navbar />}
+		</>
 	);
 };
 

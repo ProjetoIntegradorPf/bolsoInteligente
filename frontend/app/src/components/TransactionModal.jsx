@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
 const TransactionModal = ({ active, handleModal, token, id, setErrorMessage }) => {
+	const currentDate = new Date().toISOString().split('T')[0];
+
 	const [description, setDescription] = useState('');
 	const [type, setType] = useState('');
-	const [categoryId, setCategoryId] = useState('');
 	const [categories, setCategories] = useState([]);
 	const [value, setValue] = useState('');
+	const [date, setDate] = useState(currentDate);
 	const [error, setError] = useState('');
 	const [selectedCategory, setSelectedCategory] = useState('');
 
@@ -19,19 +21,21 @@ const TransactionModal = ({ active, handleModal, token, id, setErrorMessage }) =
 						Authorization: 'Bearer ' + token
 					}
 				};
+				const newType = type === 'INVESTIMENTO' ? 'investment' : type === 'DESPESA' ? 'expense' : 'revenue';
 				try {
 					const response = await fetch(`/api/transactions/${id}`, requestOptions);
 					if (!response.ok) {
-						setErrorMessage('Não foi possivel carregar a transação');
+						setErrorMessage('Não foi possível carregar a transação');
 						return;
 					}
 					const data = await response.json();
 					setDescription(data.description);
 					setType(data.type);
-					setCategoryId(data[`category_${data.type.toLowerCase()}_id`]);
+					setSelectedCategory(`${data[`category_${newType}_id`]},${data[`category_${newType}_name`]}`);
 					setValue(data.value.toFixed(2));
+					setDate(data.date);
 				} catch (error) {
-					setErrorMessage('Não foi possivel carregar a transação');
+					setErrorMessage('Não foi possível carregar a transação');
 				}
 			}
 		};
@@ -86,15 +90,16 @@ const TransactionModal = ({ active, handleModal, token, id, setErrorMessage }) =
 	const cleanFormData = () => {
 		setDescription('');
 		setType('');
-		setCategoryId('');
+		('');
 		setSelectedCategory('');
 		setValue('');
+		setDate('');
 		setError('');
 	};
 
 	const handleCreateTransaction = async (e) => {
 		e.preventDefault();
-		if (!description || !type || !selectedCategory || !value) {
+		if (!description || !type || !selectedCategory || !value || !date) {
 			setError('Por favor, preencha todos os campos.');
 			return;
 		}
@@ -115,7 +120,8 @@ const TransactionModal = ({ active, handleModal, token, id, setErrorMessage }) =
 			type: type,
 			[`category_${newType}_id`]: parseInt(categoryId),
 			[`category_${newType}_name`]: categoryName,
-			value: formattedValue
+			value: formattedValue,
+			date: date
 		};
 		console.log(body);
 		const requestOptions = {
@@ -142,7 +148,7 @@ const TransactionModal = ({ active, handleModal, token, id, setErrorMessage }) =
 
 	const handleUpdateTransaction = async (e) => {
 		e.preventDefault();
-		if (!description || !type || !selectedCategory || !value) {
+		if (!description || !type || !selectedCategory || !value || !date) {
 			setError('Por favor, preencha todos os campos.');
 			return;
 		}
@@ -162,7 +168,8 @@ const TransactionModal = ({ active, handleModal, token, id, setErrorMessage }) =
 			type: type,
 			[`category_${newType}_id`]: parseInt(categoryId),
 			[`category_${newType}_name`]: categoryName,
-			value: formattedValue
+			value: formattedValue,
+			date: date
 		};
 		const requestOptions = {
 			method: 'PUT',
@@ -253,6 +260,18 @@ const TransactionModal = ({ active, handleModal, token, id, setErrorMessage }) =
 											setValue(e.target.value);
 										}
 									}}
+									className="input"
+									required
+								/>
+							</div>
+						</div>
+						<div className="field">
+							<label className="label">Data</label>
+							<div className="control">
+								<input
+									type="date"
+									value={date}
+									onChange={(e) => setDate(e.target.value)}
 									className="input"
 									required
 								/>

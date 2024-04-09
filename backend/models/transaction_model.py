@@ -13,6 +13,7 @@ class TransactionModel(database.Base):
     description = sql.Column(sql.String, index=True)
     type = sql.Column(sql.String, index=True)
     value = sql.Column(sql.Float, index=True)
+    date = sql.Column(sql.Date, index=True, nullable=True)
     date_created = sql.Column(sql.DateTime, default=datetime.datetime.now)
     date_last_updated = sql.Column(sql.DateTime, default=datetime.datetime.now)
     owner = orm.relationship("UserModel", back_populates="transactions")

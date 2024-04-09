@@ -1,25 +1,31 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const cards = [
-	'Relatorio Geral', //TODO esse cara vai estar na minha lista e deve estar clicavel, e ao clicar deve encaminhar para a tela do componente table
-	'Relatorio de Despesas',
-	'Relatorio de Receitas',
-	'Relatorio de Investimentos',
-	'Cadastrar Categoria de Receita',
-	'Cadastrar Categoria de Despesa',
-	'Cadastrar Categoria de Investimento'
+	{ name: 'Relatório Geral', component: 'relatorio-geral' },
+	{ name: 'Relatório de Despesas', component: 'despesas' },
+	{ name: 'Relatório de Receitas', component: 'receitas' },
+	// { name: 'Relatório de Investimentos', component: 'investimentos' },
+	{ name: 'Cadastrar Categoria de Receita', component: 'categoria-receita' },
+	{ name: 'Cadastrar Categoria de Despesa', component: 'categoria-despesa' }
+	// { name: 'Cadastrar Categoria de Investimento', component: 'categoria-investimento' }
 ];
 
-const CardMenu = ({ cards }) => {
+const CardMenu = () => {
 	return (
-		<div className="columns is-multiline is-centered" style={{ paddingLeft: '20%' }}>
+		<div className="columns is-multiline is-centered">
 			{cards.map((card, index) => (
-				<div key={index} className="column is-one-third is-centered">
-					<div className="card" style={{ width: '400px' }}>
+				<div key={index} className="is-one-third">
+					<div className="card" style={{ width: '400px', margin: '50px' }}>
 						<div className="card-content has-text-centered">
-							<p className="title" style={{ fontSize: '16px' }}>
-								{card}
-							</p>
+							<div className="content">
+								<Link
+									className="is-size-4 is-dark has-text has-text-white has-tex-minimal-bold"
+									to={`/${card.component}`}
+								>
+									{card.name}
+								</Link>
+							</div>
 						</div>
 					</div>
 				</div>

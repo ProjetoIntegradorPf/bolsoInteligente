@@ -43,6 +43,8 @@ async def get_transactions(
     description: str = fastapi.Query(None),
     type: str = fastapi.Query(None),
     value: float = fastapi.Query(None),
+    start_date: str = fastapi.Query(None),
+    end_date: str = fastapi.Query(None),
 ):
     filters = {}
     if description:
@@ -51,6 +53,10 @@ async def get_transactions(
         filters["type"] = type
     if value is not None:
         filters["value"] = value
+    if start_date is not None:
+        filters["start_date"] = start_date
+    if end_date is not None:
+        filters["end_date"] = end_date
 
     return await transaction_service.get_transactions(user=user, db=db, filters=filters)
 

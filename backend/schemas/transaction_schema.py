@@ -14,6 +14,7 @@ class TransactionCreateSchema(BaseModel):
     description: str
     type: TransactionType
     value: float
+    date: Optional[datetime] = None
     category_expense_id: Optional[int] = None
     category_revenue_id: Optional[int] = None
     category_investment_id: Optional[int] = None
