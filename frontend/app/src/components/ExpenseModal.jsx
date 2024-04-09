@@ -4,9 +4,10 @@ const ExpenseModal = ({ active, handleModal, token, id, setErrorMessage }) => {
 	const [name, setName] = useState('');
 	const [description, setDescription] = useState('');
 	const [error, setError] = useState('');
+	const [expenseData, setExpenseData] = useState(null); // Estado para armazenar os dados da despesa que será atualizada
 
 	useEffect(() => {
-		const fetchData = async () => {
+		const fetchData = async (newId) => {
 			if (id) {
 				try {
 					const requestOptions = {
@@ -19,9 +20,9 @@ const ExpenseModal = ({ active, handleModal, token, id, setErrorMessage }) => {
 					const response = await fetch(`/api/expenses/${id}`, requestOptions);
 					if (response.ok) {
 						const data = await response.json();
-						setId(data.id);
-						setName(data.name);
-						setDescription(data.description);
+						setExpenseData(data); // Atualiza o estado com os dados da despesa obtida
+						setName(data.name); // Define o valor do campo de nome com o valor da despesa
+						setDescription(data.description); // Define o valor do campo de descrição com o valor da despesa
 					} else {
 						setErrorMessage('Não foi possivel carregar a despesa');
 					}
@@ -76,6 +77,7 @@ const ExpenseModal = ({ active, handleModal, token, id, setErrorMessage }) => {
 			setError('Por favor, preencha todos os campos.');
 			return;
 		}
+		let body = { name: name, description: description };
 		try {
 			const requestOptions = {
 				method: 'PUT',
@@ -83,7 +85,7 @@ const ExpenseModal = ({ active, handleModal, token, id, setErrorMessage }) => {
 					'Content-Type': 'application/json',
 					Authorization: token ? `Bearer ${token}` : undefined
 				},
-				body: JSON.stringify({ name, description })
+				body: JSON.stringify(body)
 			};
 			const url = `/api/expenses/${id}`;
 			const response = await fetch(url, requestOptions);
@@ -114,7 +116,7 @@ const ExpenseModal = ({ active, handleModal, token, id, setErrorMessage }) => {
 							<div className="control">
 								<input
 									type="text"
-									placeholder="Digite a Nome"
+									placeholder="Digite o nome"
 									value={name}
 									onChange={(e) => setName(e.target.value)}
 									className="input"

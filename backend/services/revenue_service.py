@@ -36,6 +36,12 @@ async def delete_revenue(
         db: Session,
         user: user_schema.UserSchema,
         revenue_id: int):
+    
+    revenue = await revenue_repository.get_revenue_by_id(db, user, revenue_id)
+
+    if not revenue:
+        raise HTTPException(status_code=404, detail="Revenue not found")
+
     transactions = await get_transactions(db, user, {"category_revenue_id": revenue_id})
     if transactions:
         raise HTTPException(
@@ -50,4 +56,10 @@ async def update_revenue(
         user: user_schema.UserSchema,
         revenue: revenue_schema.RevenueCreateSchema,
         revenue_id: int):
+        
+    new_revenue = await revenue_repository.get_revenue_by_id(db, user, revenue_id)
+
+    if not new_revenue:
+        raise HTTPException(status_code=404, detail="Revenue not found")
+
     return await revenue_repository.update_revenue(db, user, revenue, revenue_id)

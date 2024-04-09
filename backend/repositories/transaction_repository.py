@@ -81,10 +81,7 @@ async def get_transaction_by_id(
         .filter_by(owner_id=user.id, id=transaction_id)
         .first()
     )
-
-    if not transaction:
-        raise HTTPException(status_code=404, detail="Transaction not found")
-
+    
     return transaction
 
 

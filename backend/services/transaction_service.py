@@ -33,7 +33,15 @@ async def get_transaction_by_id(
         db: Session,
         user: user_schema.UserSchema,
         transaction_id: int):
-    return await transaction_repository.get_transaction_by_id(db, user, transaction_id)
+    
+    transaction = await transaction_repository.get_transaction_by_id(db, user, transaction_id)
+
+    if not transaction:
+        raise HTTPException(
+            status_code=404,
+            detail="Transaction not found")
+
+    return transaction
 
 
 async def delete_transaction(
@@ -41,6 +49,12 @@ async def delete_transaction(
     user: user_schema.UserSchema,
     db: Session,
 ):
+    transaction = await transaction_repository.get_transaction_by_id(db, user, transaction_id)
+
+    if not transaction:
+        raise HTTPException(
+            status_code=404,
+            detail="Transaction not found")
     return await transaction_repository.delete_transaction(transaction_id, user, db)
 
 
@@ -49,6 +63,14 @@ async def update_transaction(
         user: user_schema.UserSchema,
         transaction_id: int,
         transaction: transaction_schema.TransactionCreateSchema):
+        
+    transaction = await transaction_repository.get_transaction_by_id(db, user, transaction_id)
+
+    if not transaction:
+        raise HTTPException(
+            status_code=404,
+            detail="Transaction not found")
+
     return await transaction_repository.update_transaction(db, user, transaction_id, transaction)
 
 

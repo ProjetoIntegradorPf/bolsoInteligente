@@ -17,18 +17,17 @@ import services.user_service as user_service
 router = fastapi.APIRouter()
 
 
-@router.post("/api/revenues", response_model=revenue_schema.RevenueSchema)
+@router.post("/api/revenues", response_model=revenue_schema.RevenueSchema, status_code=201)
 async def cretae_revenue(
         revenue: revenue_schema.RevenueCreateSchema,
         user: user_model.UserModel = fastapi.Depends(
             user_service.get_current_user),
     db: orm.Session = fastapi.Depends(get_db),
 ):
-    print(revenue)
     return await revenue_service.create_revenue(user=user, db=db, revenue=revenue)
 
 
-@router.get("/api/revenues", response_model=List[revenue_schema.RevenueSchema])
+@router.get("/api/revenues", response_model=List[revenue_schema.RevenueSchema], status_code=200)
 async def get_revenues(
         user: user_model.UserModel = fastapi.Depends(
             user_service.get_current_user),
@@ -42,7 +41,7 @@ async def get_revenues(
     return await revenue_service.get_revenues(user=user, db=db, filters=filters)
 
 
-@router.get("/api/revenues/{revenue_id}", status_code=200)
+@router.get("/api/revenues/{revenue_id}", status_code=200, response_model=revenue_schema.RevenueSchema)
 async def get_revenue_by_id(
         revenue_id: int,
         user: user_model.UserModel = fastapi.Depends(
@@ -59,11 +58,10 @@ async def delete_revenue(
             user_service.get_current_user),
     db: orm.Session = fastapi.Depends(get_db),
 ):
-    await revenue_service.delete_revenue(db, user, revenue_id)
-    return {"message", "Successfully Deleted"}
+    return await revenue_service.delete_revenue(db, user, revenue_id)
 
 
-@router.put("/api/revenues/{revenue_id}", status_code=200)
+@router.put("/api/revenues/{revenue_id}", status_code=204)
 async def update_revenue(
         revenue_id: int,
         revenue: revenue_schema.RevenueCreateSchema,
@@ -71,5 +69,4 @@ async def update_revenue(
             user_service.get_current_user),
     db: orm.Session = fastapi.Depends(get_db),
 ):
-    await revenue_service.update_revenue(db, user, revenue, revenue_id)
-    return {"message", "Successfully Updated"}
+    return await revenue_service.update_revenue(db, user, revenue, revenue_id)

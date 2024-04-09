@@ -13,7 +13,6 @@ async def create_expense(
         db: Session,
         user: user_schema.UserSchema,
         expense: expense_schema.ExpenseCreateSchema):
-    print(ExpenseModel(**expense.dict()))
     expense_db = ExpenseModel(**expense.dict(), owner=user)
     db.add(expense_db)
     db.commit()
@@ -66,13 +65,25 @@ async def delete_expense(
 async def update_expense(
     db: Session,
     user: user_schema.UserSchema,
-    expense: expense_schema.ExpenseCreateSchema,
+    expense_data: expense_schema.ExpenseCreateSchema,
     expense_id: int,
 ):
+    # Check if expense exists
     expense_db = await get_expense_by_id(db, user, expense_id)
-    expense_db.name = expense.name
-    expense_db.description = expense.description
+    if expense_db is None:
+        raise HTTPException(status_code=404, detail="Despesa não encontrada")
+    
+    print(expense_data.description, expense_data.name)
+
+    # Update expense fields with new data
+    expense_db.name = expense_data.name
+    expense_db.description = expense_data.description
     expense_db.date_last_updated = datetime.datetime.now()
+
+    # Commit the transaction to the database
+    db.add(expense_db)
     db.commit()
+
+    # Refresh the expense object and return it
     db.refresh(expense_db)
     return expense_db

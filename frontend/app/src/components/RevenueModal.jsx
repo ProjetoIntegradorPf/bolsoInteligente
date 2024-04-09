@@ -4,9 +4,10 @@ const RevenueModal = ({ active, handleModal, token, id, setErrorMessage }) => {
 	const [name, setName] = useState('');
 	const [description, setDescription] = useState('');
 	const [error, setError] = useState('');
+	const [revenueData, setRevenueData] = useState(null); // Estado para armazenar os dados da receita que será atualizada
 
 	useEffect(() => {
-		const fetchData = async () => {
+		const fetchData = async (newId) => {
 			if (id) {
 				try {
 					const requestOptions = {
@@ -19,9 +20,9 @@ const RevenueModal = ({ active, handleModal, token, id, setErrorMessage }) => {
 					const response = await fetch(`/api/revenues/${id}`, requestOptions);
 					if (response.ok) {
 						const data = await response.json();
-						setId(data.id);
-						setName(data.name);
-						setDescription(data.description);
+						setRevenueData(data); // Atualiza o estado com os dados da receita obtida
+						setName(data.name); // Define o valor do campo de nome com o valor da receita
+						setDescription(data.description); // Define o valor do campo de descrição com o valor da receita
 					} else {
 						setErrorMessage('Não foi possivel carregar a receita');
 					}
@@ -76,6 +77,7 @@ const RevenueModal = ({ active, handleModal, token, id, setErrorMessage }) => {
 			setError('Por favor, preencha todos os campos.');
 			return;
 		}
+		let body = { name: name, description: description };
 		try {
 			const requestOptions = {
 				method: 'PUT',
@@ -83,7 +85,7 @@ const RevenueModal = ({ active, handleModal, token, id, setErrorMessage }) => {
 					'Content-Type': 'application/json',
 					Authorization: token ? `Bearer ${token}` : undefined
 				},
-				body: JSON.stringify({ name, description })
+				body: JSON.stringify(body)
 			};
 			const url = `/api/revenues/${id}`;
 			const response = await fetch(url, requestOptions);
@@ -104,7 +106,7 @@ const RevenueModal = ({ active, handleModal, token, id, setErrorMessage }) => {
 			<div className="modal-background" onClick={handleModal}></div>
 			<div className="modal-card">
 				<header className="modal-card-head has-background-primary-light">
-					<h1 className="modal-card-title">{id ? 'Atualizar Despesa' : 'Criar Despesa'}</h1>
+					<h1 className="modal-card-title">{id ? 'Atualizar Receita' : 'Criar Receita'}</h1>
 				</header>
 				{error && <div className="notification is-danger">{error}</div>}
 				<section className="modal-card-body">
@@ -114,7 +116,7 @@ const RevenueModal = ({ active, handleModal, token, id, setErrorMessage }) => {
 							<div className="control">
 								<input
 									type="text"
-									placeholder="Digite a Nome"
+									placeholder="Digite o nome"
 									value={name}
 									onChange={(e) => setName(e.target.value)}
 									className="input"

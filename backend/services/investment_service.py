@@ -45,6 +45,11 @@ async def delete_investment(
         raise fastapi.HTTPException(
             status_code=400,
             detail="This investment is in use and cannot be deleted")
+    
+    investment = await investment_repository.get_investment_by_id(db, user, investment_id)
+    if investment is None:
+        raise fastapi.HTTPException(
+            status_code=404, detail="Investment not found")
 
     return await investment_repository.delete_investment(db, user, investment_id)
 
@@ -54,4 +59,10 @@ async def update_investment(
         user: user_schema.UserSchema,
         investment_id: int,
         investment: investment_schema.InvestmentSchema):
+    
+    new_investment = await investment_repository.get_investment_by_id(db, user, investment_id)
+    if new_investment is None:
+        raise fastapi.HTTPException(
+            status_code=404, detail="Investment not found")
+
     return await investment_repository.update_investment(db, user, investment_id, investment)
