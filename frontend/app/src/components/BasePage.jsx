@@ -32,8 +32,7 @@ const BasePage = ({ children }) => {
 
 	return (
 		<div>
-			{}
-			<Header title={message} />
+			<Header />
 			<main className="column">{children}</main>
 			<Footer />
 		</div>

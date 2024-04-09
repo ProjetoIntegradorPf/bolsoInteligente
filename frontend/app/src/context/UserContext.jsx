@@ -3,24 +3,31 @@ import React, { createContext, useEffect, useState } from 'react';
 export const UserContext = createContext();
 
 export const UserProvider = (props) => {
-	const [token, setToken] = useState(localStorage.getItem('awesomeTransactionsToken'));
+	const [token, setToken] = useState(localStorage.getItem('awesomeTransactionsToken') || '');
 
 	useEffect(() => {
 		const fetchUser = async () => {
+			if (!token) return;
+
 			const requestOptions = {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
-					Authorization: 'Bearer ' + token
+					Authorization: `Bearer ${token}`
 				}
 			};
 
-			const response = await fetch('/api/users/me', requestOptions);
-
-			if (!response.ok) {
+			try {
+				const response = await fetch('/api/users/me', requestOptions);
+				if (!response.ok) {
+					setToken(null);
+				}
+			} catch (error) {
+				console.error('Error fetching user:', error);
 				setToken(null);
 			}
-			localStorage.setItem('awesomeTransactionsToken', token);
+
+			localStorage.setItem('awesomeTransactionsToken', token || '');
 		};
 		fetchUser();
 	}, [token]);

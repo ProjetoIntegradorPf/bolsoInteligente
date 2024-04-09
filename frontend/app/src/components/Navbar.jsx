@@ -18,6 +18,7 @@ const Navbar = () => {
 
 	const handleLogout = () => {
 		setToken(null);
+		localStorage.removeItem('awesomeTransactionsToken');
 	};
 
 	return (
