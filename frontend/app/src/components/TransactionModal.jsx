@@ -23,7 +23,7 @@ const TransactionModal = ({ active, handleModal, token, id, setErrorMessage }) =
 				};
 				const newType = type === 'INVESTIMENTO' ? 'investment' : type === 'DESPESA' ? 'expense' : 'revenue';
 				try {
-					const response = await fetch(`/api/transactions/${id}`, requestOptions);
+					const response = await fetch(`https://bolsointeligente-api.onrender.com/api/transactions/${id}`, requestOptions);
 					if (!response.ok) {
 						setErrorMessage('Não foi possível carregar a transação');
 						return;
@@ -48,13 +48,13 @@ const TransactionModal = ({ active, handleModal, token, id, setErrorMessage }) =
 			let url;
 			switch (type) {
 				case 'RECEITA':
-					url = '/api/revenues';
+					url = 'https://bolsointeligente-api.onrender.com/api/revenues';
 					break;
 				case 'DESPESA':
-					url = '/api/expenses';
+					url = 'https://bolsointeligente-api.onrender.com/api/expenses';
 					break;
 				case 'INVESTIMENTO':
-					url = '/api/investments';
+					url = 'https://bolsointeligente-api.onrender.com/api/investments';
 					break;
 				default:
 					console.error('Tipo de categoria inválido');
@@ -133,7 +133,7 @@ const TransactionModal = ({ active, handleModal, token, id, setErrorMessage }) =
 		};
 		try {
 			console.log(requestOptions);
-			const response = await fetch('/api/transactions', requestOptions);
+			const response = await fetch('https://bolsointeligente-api.onrender.com/api/transactions', requestOptions);
 			if (!response.ok) {
 				setError('Algo deu errado. Por favor, tente novamente');
 			} else {
@@ -179,7 +179,7 @@ const TransactionModal = ({ active, handleModal, token, id, setErrorMessage }) =
 			body: JSON.stringify(body)
 		};
 		try {
-			const response = await fetch(`/api/transactions/${id}`, requestOptions);
+			const response = await fetch(`https://bolsointeligente-api.onrender.com/api/transactions/${id}`, requestOptions);
 			if (!response.ok) {
 				setError('Alguma coisa deu errado durante a atualização.');
 			} else {

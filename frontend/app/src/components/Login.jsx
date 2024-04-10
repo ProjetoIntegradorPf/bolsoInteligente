@@ -17,7 +17,7 @@ const Login = () => {
 			body: JSON.stringify(`grant_type=&username=${email}&password=${password}&scope=&client_id=&client_secret=`)
 		};
 
-		const response = await fetch('/api/token', requestOptions);
+		const response = await fetch('https://bolsointeligente-api.onrender.com/api/token', requestOptions);
 		const data = await response.json();
 
 		if (!response.ok) {

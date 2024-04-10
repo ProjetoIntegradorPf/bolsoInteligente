@@ -16,7 +16,7 @@ const BasePage = ({ children }) => {
 				'Content-Type': 'application/json'
 			}
 		};
-		const response = await fetch('/api', requestOptions);
+		const response = await fetch('https://bolsointeligente-api.onrender.com/api', requestOptions);
 		const data = await response.json();
 
 		if (!response.ok) {

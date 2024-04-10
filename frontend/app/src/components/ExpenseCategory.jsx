@@ -26,7 +26,7 @@ const ExpenseCategory = () => {
 				Authorization: 'Bearer ' + token
 			}
 		};
-		const response = await fetch(`/api/expenses/${id}`, requestOptions);
+		const response = await fetch(`https://bolsointeligente-api.onrender.com/api/expenses/${id}`, requestOptions);
 		if (!response.ok) {
 			setErrorMessage('Falha ao deletar despesa');
 		}
@@ -42,7 +42,7 @@ const ExpenseCategory = () => {
 				Authorization: 'Bearer ' + token
 			}
 		};
-		const response = await fetch('/api/expenses', requestOptions);
+		const response = await fetch('https://bolsointeligente-api.onrender.com/api/expenses', requestOptions);
 		if (!response.ok) {
 			setErrorMessage('Zlgo deu errado. Não foi possivel carregar as despesas');
 		} else {

@@ -25,7 +25,7 @@ const Register = () => {
 				hashed_password: password
 			})
 		};
-		const response = await fetch('/api/users', requestOptions);
+		const response = await fetch('https://bolsointeligente-api.onrender.com/api/users', requestOptions);
 		const data = await response.json();
 
 		if (!response.ok) {

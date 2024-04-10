@@ -42,7 +42,7 @@ const Table = () => {
 					Authorization: 'Bearer ' + token
 				}
 			};
-			const response = await fetch(`/api/transactions/${id}`, requestOptions);
+			const response = await fetch(`https://bolsointeligente-api.onrender.com/api/transactions/${id}`, requestOptions);
 			if (!response.ok) {
 				throw new Error('Falha ao deletar transação');
 			}
@@ -62,7 +62,7 @@ const Table = () => {
 					Authorization: 'Bearer ' + token
 				}
 			};
-			let url = '/api/transactions';
+			let url = 'https://bolsointeligente-api.onrender.com/api/transactions';
 
 			if (currentPath === '/receitas') {
 				params.append('type', 'RECEITA');

@@ -17,7 +17,7 @@ const RevenueModal = ({ active, handleModal, token, id, setErrorMessage }) => {
 							Authorization: `Bearer ${token}`
 						}
 					};
-					const response = await fetch(`/api/revenues/${id}`, requestOptions);
+					const response = await fetch(`https://bolsointeligente-api.onrender.com/api/revenues/${id}`, requestOptions);
 					if (response.ok) {
 						const data = await response.json();
 						setRevenueData(data); // Atualiza o estado com os dados da receita obtida
@@ -57,7 +57,7 @@ const RevenueModal = ({ active, handleModal, token, id, setErrorMessage }) => {
 				},
 				body: JSON.stringify({ name, description })
 			};
-			const url = '/api/revenues';
+			const url = 'https://bolsointeligente-api.onrender.com/api/revenues';
 			const response = await fetch(url, requestOptions);
 			if (!response.ok) {
 				const errorMessage = await response.text();
@@ -87,7 +87,7 @@ const RevenueModal = ({ active, handleModal, token, id, setErrorMessage }) => {
 				},
 				body: JSON.stringify(body)
 			};
-			const url = `/api/revenues/${id}`;
+			const url = `https://bolsointeligente-api.onrender.com/api/revenues/${id}`;
 			const response = await fetch(url, requestOptions);
 			if (!response.ok) {
 				const errorMessage = await response.text();

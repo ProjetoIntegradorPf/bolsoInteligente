@@ -17,7 +17,7 @@ const ExpenseModal = ({ active, handleModal, token, id, setErrorMessage }) => {
 							Authorization: `Bearer ${token}`
 						}
 					};
-					const response = await fetch(`/api/expenses/${id}`, requestOptions);
+					const response = await fetch(`https://bolsointeligente-api.onrender.com/api/expenses/${id}`, requestOptions);
 					if (response.ok) {
 						const data = await response.json();
 						setExpenseData(data); // Atualiza o estado com os dados da despesa obtida
@@ -57,7 +57,7 @@ const ExpenseModal = ({ active, handleModal, token, id, setErrorMessage }) => {
 				},
 				body: JSON.stringify({ name, description })
 			};
-			const url = '/api/expenses';
+			const url = 'https://bolsointeligente-api.onrender.com/api/expenses';
 			const response = await fetch(url, requestOptions);
 			if (!response.ok) {
 				const errorMessage = await response.text();
@@ -87,7 +87,7 @@ const ExpenseModal = ({ active, handleModal, token, id, setErrorMessage }) => {
 				},
 				body: JSON.stringify(body)
 			};
-			const url = `/api/expenses/${id}`;
+			const url = `https://bolsointeligente-api.onrender.com/api/expenses/${id}`;
 			const response = await fetch(url, requestOptions);
 			if (!response.ok) {
 				const errorMessage = await response.text();

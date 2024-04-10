@@ -18,7 +18,7 @@ export const UserProvider = (props) => {
 			};
 
 			try {
-				const response = await fetch('/api/users/me', requestOptions);
+				const response = await fetch('https://bolsointeligente-api.onrender.com/api/users/me', requestOptions);
 				if (!response.ok) {
 					setToken(null);
 				}

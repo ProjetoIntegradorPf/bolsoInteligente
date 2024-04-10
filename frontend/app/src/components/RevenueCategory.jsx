@@ -26,7 +26,7 @@ const RevenueCategory = () => {
 				Authorization: 'Bearer ' + token
 			}
 		};
-		const response = await fetch(`/api/revenues/${id}`, requestOptions);
+		const response = await fetch(`https://bolsointeligente-api.onrender.com/api/revenues/${id}`, requestOptions);
 		if (!response.ok) {
 			setErrorMessage('Falha ao deletar receita');
 		}
@@ -42,7 +42,7 @@ const RevenueCategory = () => {
 				Authorization: 'Bearer ' + token
 			}
 		};
-		const response = await fetch('/api/revenues', requestOptions);
+		const response = await fetch('https://bolsointeligente-api.onrender.com/api/revenues', requestOptions);
 		if (!response.ok) {
 			setErrorMessage('Algo deu errado. Não foi possivel carregar as receitas');
 		} else {
