@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from database.database import create_database
 
 from controllers.api_information import router as api_router
@@ -9,6 +10,14 @@ from controllers.investment_controller import router as investment_router
 from controllers.transaction_controller import router as transaction_router
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Isso permite todas as origens, você pode especificar origens específicas se desejar
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE"],  # Métodos permitidos
+    allow_headers=["*"],  # Cabeçalhos permitidos
+)
 
 app.include_router(api_router, tags=["API Information"])
 app.include_router(user_router, tags=["Users"])
