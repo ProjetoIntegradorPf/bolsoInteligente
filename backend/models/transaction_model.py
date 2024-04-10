@@ -35,7 +35,9 @@ class TransactionModel(database.Base):
     category_revenue = orm.relationship(
         "RevenueModel", back_populates="transactions", cascade="all, delete")
     category_investment = orm.relationship(
-        "InvestmentModel", back_populates="transactions", cascade="all, delete")
+        "InvestmentModel",
+        back_populates="transactions",
+        cascade="all, delete")
 
     class Config:
         orm_mode = True

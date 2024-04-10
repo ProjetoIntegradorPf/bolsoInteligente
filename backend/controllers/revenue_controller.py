@@ -17,7 +17,9 @@ import services.user_service as user_service
 router = fastapi.APIRouter()
 
 
-@router.post("/api/revenues", response_model=revenue_schema.RevenueSchema, status_code=201)
+@router.post("/api/revenues",
+             response_model=revenue_schema.RevenueSchema,
+             status_code=201)
 async def cretae_revenue(
         revenue: revenue_schema.RevenueCreateSchema,
         user: user_model.UserModel = fastapi.Depends(
@@ -27,7 +29,9 @@ async def cretae_revenue(
     return await revenue_service.create_revenue(user=user, db=db, revenue=revenue)
 
 
-@router.get("/api/revenues", response_model=List[revenue_schema.RevenueSchema], status_code=200)
+@router.get("/api/revenues",
+            response_model=List[revenue_schema.RevenueSchema],
+            status_code=200)
 async def get_revenues(
         user: user_model.UserModel = fastapi.Depends(
             user_service.get_current_user),
@@ -41,7 +45,9 @@ async def get_revenues(
     return await revenue_service.get_revenues(user=user, db=db, filters=filters)
 
 
-@router.get("/api/revenues/{revenue_id}", status_code=200, response_model=revenue_schema.RevenueSchema)
+@router.get("/api/revenues/{revenue_id}",
+            status_code=200,
+            response_model=revenue_schema.RevenueSchema)
 async def get_revenue_by_id(
         revenue_id: int,
         user: user_model.UserModel = fastapi.Depends(

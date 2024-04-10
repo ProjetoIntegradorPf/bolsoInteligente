@@ -72,7 +72,7 @@ async def update_expense(
     expense_db = await get_expense_by_id(db, user, expense_id)
     if expense_db is None:
         raise HTTPException(status_code=404, detail="Despesa não encontrada")
-    
+
     print(expense_data.description, expense_data.name)
 
     # Update expense fields with new data

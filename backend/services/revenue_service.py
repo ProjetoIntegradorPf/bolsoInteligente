@@ -36,7 +36,7 @@ async def delete_revenue(
         db: Session,
         user: user_schema.UserSchema,
         revenue_id: int):
-    
+
     revenue = await revenue_repository.get_revenue_by_id(db, user, revenue_id)
 
     if not revenue:
@@ -56,7 +56,7 @@ async def update_revenue(
         user: user_schema.UserSchema,
         revenue: revenue_schema.RevenueCreateSchema,
         revenue_id: int):
-        
+
     new_revenue = await revenue_repository.get_revenue_by_id(db, user, revenue_id)
 
     if not new_revenue:

@@ -33,7 +33,7 @@ async def get_transaction_by_id(
         db: Session,
         user: user_schema.UserSchema,
         transaction_id: int):
-    
+
     transaction = await transaction_repository.get_transaction_by_id(db, user, transaction_id)
 
     if not transaction:
@@ -63,7 +63,7 @@ async def update_transaction(
         user: user_schema.UserSchema,
         transaction_id: int,
         transaction: transaction_schema.TransactionCreateSchema):
-        
+
     transaction = await transaction_repository.get_transaction_by_id(db, user, transaction_id)
 
     if not transaction:

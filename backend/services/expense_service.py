@@ -46,12 +46,12 @@ async def delete_expense(
         raise fastapi.HTTPException(
             status_code=422,
             detail="This expense is in use and cannot be deleted")
-    
-    expense = await expense_repository.get_expense_by_id(db, user, expense_id) 
+
+    expense = await expense_repository.get_expense_by_id(db, user, expense_id)
     if expense is None:
         raise fastapi.HTTPException(
             status_code=404, detail="Expense not found")
-    
+
     return await expense_repository.delete_expense(db, user, expense_id)
 
 
@@ -61,7 +61,7 @@ async def update_expense(
     expense: expense_schema.ExpenseCreateSchema,
     expense_id: int,
 ):
-    
+
     new_expense = await expense_repository.get_expense_by_id(db, user, expense_id)
 
     if new_expense is None:

@@ -19,7 +19,8 @@ router = fastapi.APIRouter()
 
 
 @router.post("/api/transactions",
-             response_model=transaction_schema.TransactionSchema, status_code=201)
+             response_model=transaction_schema.TransactionSchema,
+             status_code=201)
 async def create_transaction(
         transaction: transaction_schema.TransactionCreateSchema,
         user: user_schema.UserSchema = fastapi.Depends(
@@ -61,7 +62,9 @@ async def get_transactions(
     return await transaction_service.get_transactions(user=user, db=db, filters=filters)
 
 
-@router.get("/api/transactions/{transaction_id}", status_code=200, response_model=transaction_schema.TransactionSchema)
+@router.get("/api/transactions/{transaction_id}",
+            status_code=200,
+            response_model=transaction_schema.TransactionSchema)
 async def get_transaction_by_id(
         transaction_id: int,
         user: user_schema.UserSchema = fastapi.Depends(

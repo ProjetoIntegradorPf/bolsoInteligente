@@ -18,7 +18,8 @@ router = fastapi.APIRouter()
 
 
 @router.post("/api/investments",
-             response_model=investment_schema.InvestmentSchema, status_code=201)
+             response_model=investment_schema.InvestmentSchema,
+             status_code=201)
 async def cretae_investment(
         investment: investment_schema.InvestmentCreateSchema,
         user: user_model.UserModel = fastapi.Depends(
@@ -29,7 +30,8 @@ async def cretae_investment(
 
 
 @router.get("/api/investments",
-            response_model=List[investment_schema.InvestmentSchema], status_code=200)
+            response_model=List[investment_schema.InvestmentSchema],
+            status_code=200)
 async def get_investments(
         user: user_model.UserModel = fastapi.Depends(
             user_service.get_current_user),
@@ -43,7 +45,9 @@ async def get_investments(
     return await investment_service.get_investments(user=user, db=db, filters=filters)
 
 
-@router.get("/api/investments/{investment_id}", status_code=200, response_model=investment_schema.InvestmentSchema)
+@router.get("/api/investments/{investment_id}",
+            status_code=200,
+            response_model=investment_schema.InvestmentSchema)
 async def get_investment_by_id(
         investment_id: int,
         user: user_model.UserModel = fastapi.Depends(
@@ -61,6 +65,7 @@ async def delete_investment(
     db: orm.Session = fastapi.Depends(get_db),
 ):
     return await investment_service.delete_investment(investment_id, user, db)
+
 
 @router.put("/api/investments/{investment_id}", status_code=204)
 async def update_investment(

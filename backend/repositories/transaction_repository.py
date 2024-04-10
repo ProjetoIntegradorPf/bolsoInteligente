@@ -39,7 +39,8 @@ async def get_transactions(
                 TransactionModel.date.between(start_date, end_date))
         except ValueError:
             raise HTTPException(
-                status_code=400, detail="Invalid date format. Should be YYYY-MM-DD")
+                status_code=400,
+                detail="Invalid date format. Should be YYYY-MM-DD")
         finally:
             filters.pop("start_date", None)
             filters.pop("end_date", None)
@@ -50,7 +51,8 @@ async def get_transactions(
             query = query.filter(TransactionModel.date >= start_date)
         except ValueError:
             raise HTTPException(
-                status_code=400, detail="Invalid date format. Should be YYYY-MM-DD")
+                status_code=400,
+                detail="Invalid date format. Should be YYYY-MM-DD")
         finally:
             filters.pop("start_date", None)
 
@@ -60,7 +62,8 @@ async def get_transactions(
             query = query.filter(TransactionModel.date <= end_date)
         except ValueError:
             raise HTTPException(
-                status_code=400, detail="Invalid date format. Should be YYYY-MM-DD")
+                status_code=400,
+                detail="Invalid date format. Should be YYYY-MM-DD")
         finally:
             filters.pop("end_date", None)
 
@@ -81,7 +84,7 @@ async def get_transaction_by_id(
         .filter_by(owner_id=user.id, id=transaction_id)
         .first()
     )
-    
+
     return transaction
 
 
