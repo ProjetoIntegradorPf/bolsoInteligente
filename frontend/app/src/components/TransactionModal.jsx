@@ -90,7 +90,6 @@ const TransactionModal = ({ active, handleModal, token, id, setErrorMessage }) =
 	const cleanFormData = () => {
 		setDescription('');
 		setType('');
-		('');
 		setSelectedCategory('');
 		setValue('');
 		setDate('');
