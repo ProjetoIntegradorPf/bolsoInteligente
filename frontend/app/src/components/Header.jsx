@@ -17,7 +17,7 @@ const Header = () => {
 
 	return (
 		<>
-			<header className="has-text-whight-bold m-3 is-flex is-justify-content-center is-fixed-top">
+			<header className="has-text-whight-bold m-3 is-flex is-justify-content-center is-fixed-top has-background-black">
 				<img src={bolsoInteligente} alt="logo" width="300" />
 			</header>
 			{token && currentPath !== '/' && <Navbar />}

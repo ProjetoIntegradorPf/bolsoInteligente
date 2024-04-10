@@ -271,14 +271,14 @@ const Table = () => {
 							<table className="table is-bordered is-fullwidth is-hoverable">
 								<thead>
 									<tr className="is-dark">
-										<th>ID</th>
-										<th>Descrição</th>
-										<th>Tipo</th>
-										<th>Categoria</th>
-										<th>Valor</th>
-										<th>Data</th>
-										<th>Última Atualização</th>
-										<th>Ações</th>
+										<th className="has-text-white">ID</th>
+										<th className="has-text-white">Descrição</th>
+										<th className="has-text-white">Tipo</th>
+										<th className="has-text-white">Categoria</th>
+										<th className="has-text-white">Valor</th>
+										<th className="has-text-white">Data</th>
+										<th className="has-text-white">Última Atualização</th>
+										<th className="has-text-white">Ações</th>
 									</tr>
 								</thead>
 								<tbody>

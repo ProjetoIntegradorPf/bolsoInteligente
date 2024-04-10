@@ -77,11 +77,11 @@ const ExpenseCategory = () => {
 					<table className="table is-bordered is-fullwidth is-hoverable">
 						<thead>
 							<tr className="is-dark">
-								<th>ID</th>
-								<th>Name</th>
-								<th>Descrição</th>
-								<th>Última Atualização</th>
-								<th>Ações</th>
+								<th className="has-background-dark">ID</th>
+								<th className="has-background-dark">Name</th>
+								<th className="has-background-dark">Descrição</th>
+								<th className="has-background-dark">Última Atualização</th>
+								<th className="has-background-dark">Ações</th>
 							</tr>
 						</thead>
 						<tbody>

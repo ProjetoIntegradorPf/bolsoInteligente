@@ -16,7 +16,7 @@ const CardMenu = () => {
 		<div className="columns is-multiline is-centered">
 			{cards.map((card, index) => (
 				<div key={index} className="is-one-third">
-					<div className="card" style={{ width: '400px', margin: '50px' }}>
+					<div className="card has-background-dark" style={{ width: '400px', margin: '50px' }}>
 						<div className="card-content has-text-centered">
 							<div className="content">
 								<Link

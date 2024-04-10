@@ -22,7 +22,7 @@ const Navbar = () => {
 	};
 
 	return (
-		<nav className="navbar is-dark is-flex is-justify-content-center">
+		<nav className="navbar is-dark is-flex is-justify-content-center m-3">
 			{location.pathname === '/home' ? (
 				<Link to="/" className="navbar-item" onClick={handleLogout}>
 					Sair
