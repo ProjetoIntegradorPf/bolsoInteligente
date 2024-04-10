@@ -17,8 +17,5 @@ COPY backend/ .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copia os arquivos do frontend construído para o diretório de arquivos estáticos do FastAPI
-COPY --from=frontend-build /app/frontend/build /app/backend/app/static
-
 # Define o comando de inicialização do servidor FastAPI
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "main:app"]
