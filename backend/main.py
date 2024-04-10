@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from database import create_database
+from database.database import create_database
 
 from controllers.api_information import router as api_router
 from controllers.user_controller import router as user_router

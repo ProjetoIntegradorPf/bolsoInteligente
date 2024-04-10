@@ -6,7 +6,7 @@ import passlib.hash as hash
 from models.user_model import UserModel
 
 import schemas.user_schema as user_schema
-import database
+import database.database as database
 from datetime import datetime
 oauth2schema = fastapi.security.OAuth2PasswordBearer(tokenUrl="/api/token")
 

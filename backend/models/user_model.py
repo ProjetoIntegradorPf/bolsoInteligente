@@ -3,7 +3,7 @@ import sqlalchemy.orm as orm
 import passlib.hash as hash
 
 
-import database
+import database.database as database
 
 import datetime
 

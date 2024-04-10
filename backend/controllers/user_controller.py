@@ -1,4 +1,4 @@
-from database import get_db
+from database.database import get_db
 from models.user_model import UserModel
 import schemas.user_schema as user_schemas
 import services.user_service as user_service

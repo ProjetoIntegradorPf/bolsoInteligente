@@ -4,7 +4,7 @@ import fastapi
 
 import sqlalchemy.orm as orm
 
-from database import get_db
+from database.database import get_db
 
 import schemas.revenue_schema as revenue_schema
 
