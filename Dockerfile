@@ -17,9 +17,7 @@ FROM node:14 AS frontend-build
 WORKDIR /app/frontend
 
 # Copia os arquivos do frontend
-COPY frontend/app/package*.json ./
-COPY frontend/app/public ./public
-COPY frontend/app/src ./src
+COPY frontend/ .
 
 # Instala as dependências do npm e constrói o frontend
 RUN npm install
