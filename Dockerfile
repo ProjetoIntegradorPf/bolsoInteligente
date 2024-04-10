@@ -18,4 +18,5 @@ COPY backend/ .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Define o comando de inicialização para iniciar ambos os servidores
-CMD ["bash", "-c", "uvicorn main:app & npm start"]
+CMD ["bash", "-c", "cd /app/backend && uvicorn main:app & cd /app/frontend && npm start"]
+
