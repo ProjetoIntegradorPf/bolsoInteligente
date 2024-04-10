@@ -4,12 +4,11 @@ FROM python:3.10 AS backend-build
 # Define o diretório de trabalho para o backend
 WORKDIR /app/backend
 
-# Copia os arquivos do backend
-COPY backend/requirements.txt ./
-COPY backend/main.py ./
+# Copia todos os arquivos do backend
+COPY backend/ .
 
 # Instala as dependências do Python
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r backend/requirements.txt
 
 # Use a imagem base do Node.js para o frontend
 FROM node:14 AS frontend-build
