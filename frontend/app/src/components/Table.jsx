@@ -134,7 +134,6 @@ const Table = () => {
 			default:
 				break;
 		}
-		getTransactions();
 	};
 
 	return (
@@ -159,7 +158,10 @@ const Table = () => {
 								value={descriptionFilter}
 								onChange={(e) => setDescriptionFilter(e.target.value)}
 							/>
-							<button className="button is-danger is-small m-2" onClick={() => clearFilter('description')}>
+							<button className="button is-danger is-small m-2" onClick={() => {
+								clearFilter('description');
+								handleFilter();
+							}}>
 								Limpar
 							</button>
 						</div>
@@ -175,7 +177,10 @@ const Table = () => {
 								value={startDateFilter}
 								onChange={(e) => setStartDateFilter(e.target.value)}
 							/>
-							<button className="button is-danger is-small m-2" onClick={() => clearFilter('startDate')}>
+							<button className="button is-danger is-small m-2" onClick={() => {
+								clearFilter('description');
+								handleFilter();
+							}}>
 								Limpar
 							</button>
 						</div>
@@ -191,7 +196,10 @@ const Table = () => {
 								value={endDateFilter}
 								onChange={(e) => setEndDateFilter(e.target.value)}
 							/>
-							<button className="button  is-danger is-small m-2" onClick={() => clearFilter('endDate')}>
+							<button className="button  is-danger is-small m-2" onClick={() => {
+								clearFilter('description');
+								handleFilter();
+							}}>
 								Limpar
 							</button>
 						</div>
