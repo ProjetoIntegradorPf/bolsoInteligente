@@ -45,7 +45,7 @@ const Register = () => {
 		setErrorMessage(
 			password !== confirmationPassword
 				? 'Senhas não coincidem'
-				: 'Certifique-se de que a senha tenha pelo menos 8 caracteres, contenha pelo menos uma letra e um número'
+				: 'Certifique-se de que a senha tenha pelo menos 8 caracteres, contenha pelo menos uma letra minúscula, uma letra maiúscula e um número'
 		);
 		setPassword('');
 		setConfirmationPassword('');

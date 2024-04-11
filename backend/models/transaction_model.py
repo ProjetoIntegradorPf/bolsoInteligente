@@ -10,7 +10,7 @@ class TransactionModel(database.Base):
     __tablename__ = "transactions"
     id = sql.Column(sql.Integer, primary_key=True, index=True)
     owner_id = sql.Column(sql.Integer, sql.ForeignKey("users.id"))
-    description = sql.Column(sql.String, index=True)
+    description = sql.Column(sql.String, index=True, nullable=True)
     type = sql.Column(sql.String, index=True)
     value = sql.Column(sql.Float, index=True)
     date = sql.Column(sql.Date, index=True, nullable=True)

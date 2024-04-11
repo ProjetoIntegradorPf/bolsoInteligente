@@ -9,7 +9,7 @@ class InvestmentModel(database.Base):
     __tablename__ = "investments"
     id = sql.Column(sql.Integer, primary_key=True, index=True)
     user_id = sql.Column(sql.Integer, sql.ForeignKey("users.id"))
-    description = sql.Column(sql.String)
+    description = sql.Column(sql.String, nullable=True)
     type = sql.Column(sql.String)
     investment_amount = sql.Column(sql.Float)
     start_date = sql.Column(sql.Date)

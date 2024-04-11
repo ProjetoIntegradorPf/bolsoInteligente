@@ -9,14 +9,14 @@ from controllers.revenue_controller import router as revenue_router
 from controllers.investment_controller import router as investment_router
 from controllers.transaction_controller import router as transaction_router
 
-app = FastAPI()
+app = FastAPI(title="Bolso Inteligente", version="0.0.1")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Isso permite todas as origens, você pode especificar origens específicas se desejar
+    allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE"],  # Métodos permitidos
-    allow_headers=["*"],  # Cabeçalhos permitidos
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_headers=["*"],
 )
 
 app.include_router(api_router, tags=["API Information"])

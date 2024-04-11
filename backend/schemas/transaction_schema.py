@@ -11,7 +11,7 @@ class TransactionType(str, Enum):
 
 
 class TransactionCreateSchema(BaseModel):
-    description: str
+    description: Optional[str] = ''
     type: TransactionType
     value: float
     date: Optional[datetime] = None

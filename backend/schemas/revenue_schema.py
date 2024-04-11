@@ -1,9 +1,10 @@
+from typing import Optional
 from pydantic import BaseModel
 
 
 class RevenueBase(BaseModel):
     name: str
-    description: str
+    description: Optional[str] = ''
 
 
 class RevenueCreateSchema(RevenueBase):

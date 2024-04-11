@@ -1,13 +1,13 @@
+from typing import Optional
 from pydantic import BaseModel
 
 
 class ExpenseBase(BaseModel):
     name: str
-    description: str
+    description: Optional[str] = ''
 
 
 class ExpenseCreateSchema(ExpenseBase):
-
     pass
 
 

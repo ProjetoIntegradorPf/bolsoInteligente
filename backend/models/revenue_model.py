@@ -11,7 +11,7 @@ class RevenueModel(database.Base):
 
     id = sql.Column(sql.Integer, primary_key=True, index=True)
     name = sql.Column(sql.String, index=True)
-    description = sql.Column(sql.String)
+    description = sql.Column(sql.String, nullable=True)
     date_created = sql.Column(sql.DateTime, default=datetime.datetime.now)
     date_last_updated = sql.Column(sql.DateTime, default=datetime.datetime.now)
     user_id = sql.Column(sql.Integer, sql.ForeignKey("users.id"))

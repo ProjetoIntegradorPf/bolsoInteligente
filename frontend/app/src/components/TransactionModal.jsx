@@ -21,9 +21,12 @@ const TransactionModal = ({ active, handleModal, token, id, setErrorMessage }) =
 						Authorization: 'Bearer ' + token
 					}
 				};
-				const newType = type === 'INVESTIMENTO' ? 'investment' : type === 'DESPESA' ? 'expense' : 'revenue';
+				const newType = type === 'DESPESA' ? 'expense' : type === 'RECEITA' ? 'revenue' : 'investment';
 				try {
-					const response = await fetch(`https://bolsointeligente-api.onrender.com/api/transactions/${id}`, requestOptions);
+					const response = await fetch(
+						`https://bolsointeligente-api.onrender.com/api/transactions/${id}`,
+						requestOptions
+					);
 					if (!response.ok) {
 						setErrorMessage('Não foi possível carregar a transação');
 						return;
@@ -53,9 +56,9 @@ const TransactionModal = ({ active, handleModal, token, id, setErrorMessage }) =
 				case 'DESPESA':
 					url = 'https://bolsointeligente-api.onrender.com/api/expenses';
 					break;
-				case 'INVESTIMENTO':
-					url = 'https://bolsointeligente-api.onrender.com/api/investments';
-					break;
+				// case 'INVESTIMENTO':
+				// 	url = 'https://bolsointeligente-api.onrender.com/api/investments';
+				// 	break;
 				default:
 					console.error('Tipo de categoria inválido');
 					return;
@@ -98,8 +101,8 @@ const TransactionModal = ({ active, handleModal, token, id, setErrorMessage }) =
 
 	const handleCreateTransaction = async (e) => {
 		e.preventDefault();
-		if (!description || !type || !selectedCategory || !value || !date) {
-			setError('Por favor, preencha todos os campos.');
+		if (!type || !selectedCategory || !value || !date) {
+			setError('Por favor, preencha todos os campos obrigatórios.');
 			return;
 		}
 		if (!['RECEITA', 'DESPESA', 'INVESTIMENTO'].includes(type)) {
@@ -113,7 +116,7 @@ const TransactionModal = ({ active, handleModal, token, id, setErrorMessage }) =
 			return;
 		}
 		const [categoryId, categoryName] = selectedCategory.split(',');
-		const newType = type === 'INVESTIMENTO' ? 'investment' : type === 'DESPESA' ? 'expense' : 'revenue';
+		const newType = type === 'DESPESA' ? 'expense' : type === 'RECEITA' ? 'revenue' : 'investment';
 		const body = {
 			description: description,
 			type: type,
@@ -147,8 +150,8 @@ const TransactionModal = ({ active, handleModal, token, id, setErrorMessage }) =
 
 	const handleUpdateTransaction = async (e) => {
 		e.preventDefault();
-		if (!description || !type || !selectedCategory || !value || !date) {
-			setError('Por favor, preencha todos os campos.');
+		if (!type || !selectedCategory || !value || !date) {
+			setError('Por favor, preencha todos os campos obrigatórios.');
 			return;
 		}
 		if (!['RECEITA', 'DESPESA', 'INVESTIMENTO'].includes(type)) {
@@ -160,7 +163,7 @@ const TransactionModal = ({ active, handleModal, token, id, setErrorMessage }) =
 			setError('Valor não pode ser zero.');
 			return;
 		}
-		const newType = type === 'INVESTIMENTO' ? 'investment' : type === 'DESPESA' ? 'expense' : 'revenue';
+		const newType = type === 'DESPESA' ? 'expense' : type === 'RECEITA' ? 'revenue' : 'investment';
 		const [categoryId, categoryName] = selectedCategory.split(',');
 		const body = {
 			description: description,
@@ -202,33 +205,20 @@ const TransactionModal = ({ active, handleModal, token, id, setErrorMessage }) =
 				<section className="modal-card-body">
 					<form>
 						<div className="field">
-							<label className="label">Descrição</label>
-							<div className="control">
-								<input
-									type="text"
-									placeholder="Digite a descrição"
-									value={description}
-									onChange={(e) => setDescription(e.target.value)}
-									className="input"
-									required
-								/>
-							</div>
-						</div>
-						<div className="field">
-							<label className="label">Tipo</label>
+							<label className="label">Tipo *</label>
 							<div className="control">
 								<div className="select is-fullwidth">
 									<select value={type} onChange={(e) => setType(e.target.value)} required>
 										<option value="">Selecione</option>
 										<option value="RECEITA">RECEITA</option>
 										<option value="DESPESA">DESPESA</option>
-										<option value="INVESTIMENTO">INVESTIMENTO</option>
+										{/* <option value="INVESTIMENTO">INVESTIMENTO</option> */}
 									</select>
 								</div>
 							</div>
 						</div>
 						<div className="field">
-							<label className="label">Categoria</label>
+							<label className="label">Categoria *</label>
 							<div className="control">
 								<div className="select is-fullwidth">
 									<select
@@ -247,7 +237,7 @@ const TransactionModal = ({ active, handleModal, token, id, setErrorMessage }) =
 							</div>
 						</div>
 						<div className="field">
-							<label className="label">Valor</label>
+							<label className="label">Valor *</label>
 							<div className="control">
 								<input
 									type="text"
@@ -265,7 +255,7 @@ const TransactionModal = ({ active, handleModal, token, id, setErrorMessage }) =
 							</div>
 						</div>
 						<div className="field">
-							<label className="label">Data</label>
+							<label className="label">Data *</label>
 							<div className="control">
 								<input
 									type="date"
@@ -273,6 +263,18 @@ const TransactionModal = ({ active, handleModal, token, id, setErrorMessage }) =
 									onChange={(e) => setDate(e.target.value)}
 									className="input"
 									required
+								/>
+							</div>
+						</div>
+						<div className="field">
+							<label className="label">Descrição</label>
+							<div className="control">
+								<input
+									type="text"
+									placeholder="Digite a descrição"
+									value={description}
+									onChange={(e) => setDescription(e.target.value)}
+									className="input"
 								/>
 							</div>
 						</div>

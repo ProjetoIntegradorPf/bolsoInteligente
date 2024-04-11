@@ -44,8 +44,8 @@ const ExpenseModal = ({ active, handleModal, token, id, setErrorMessage }) => {
 
 	const handleCreateExpense = async (e) => {
 		e?.preventDefault();
-		if (!description || !name) {
-			setError('Por favor, preencha todos os campos.');
+		if (!name) {
+			setError('Por favor, preencha o campo nome.');
 			return;
 		}
 		try {
@@ -73,8 +73,8 @@ const ExpenseModal = ({ active, handleModal, token, id, setErrorMessage }) => {
 
 	const handleUpdateExpense = async (e) => {
 		e?.preventDefault();
-		if (!description || !name) {
-			setError('Por favor, preencha todos os campos.');
+		if (!name) {
+			setError('Por favor, preencha o campo nome.');
 			return;
 		}
 		let body = { name: name, description: description };
@@ -112,7 +112,7 @@ const ExpenseModal = ({ active, handleModal, token, id, setErrorMessage }) => {
 				<section className="modal-card-body">
 					<form>
 						<div className="field">
-							<label className="label">Nome</label>
+							<label className="label">Nome *</label>
 							<div className="control">
 								<input
 									type="text"
@@ -133,7 +133,6 @@ const ExpenseModal = ({ active, handleModal, token, id, setErrorMessage }) => {
 									value={description}
 									onChange={(e) => setDescription(e.target.value)}
 									className="input"
-									required
 								/>
 							</div>
 						</div>

@@ -19,7 +19,7 @@ const Table = () => {
 	const [id, setId] = useState(null);
 	const [totalRevenue, setTotalRevenue] = useState(0);
 	const [totalExpense, setTotalExpense] = useState(0);
-	const [totalInvestment, setTotalInvestment] = useState(0);
+	// const [totalInvestment, setTotalInvestment] = useState(0);
 	const [totalBalance, setTotalBalance] = useState(0);
 	const [descriptionFilter, setDescriptionFilter] = useState('');
 	const [startDateFilter, setStartDateFilter] = useState('');
@@ -66,8 +66,8 @@ const Table = () => {
 
 			if (currentPath === '/receitas') {
 				params.append('type', 'RECEITA');
-			} else if (currentPath === '/investimentos') {
-				params.append('type', 'INVESTIMENTO');
+				// } else if (currentPath === '/investimentos') {
+				// 	params.append('type', 'INVESTIMENTO');
 			} else if (currentPath === '/despesas') {
 				params.append('type', 'DESPESA');
 			}
@@ -272,11 +272,11 @@ const Table = () => {
 								<thead>
 									<tr className="is-dark">
 										<th className="has-text-white">ID</th>
-										<th className="has-text-white">Descrição</th>
 										<th className="has-text-white">Tipo</th>
 										<th className="has-text-white">Categoria</th>
 										<th className="has-text-white">Valor</th>
 										<th className="has-text-white">Data</th>
+										<th className="has-text-white">Descrição</th>
 										<th className="has-text-white">Última Atualização</th>
 										<th className="has-text-white">Ações</th>
 									</tr>
@@ -285,7 +285,6 @@ const Table = () => {
 									{transactions.map((transaction) => (
 										<tr key={transaction.id}>
 											<td>{transaction.id}</td>
-											<td>{transaction.description}</td>
 											<td>{transaction.type}</td>
 											<td>
 												{transaction.category_revenue_name ||
@@ -296,6 +295,7 @@ const Table = () => {
 
 											<td>R$ {transaction.value.toLocaleString('pt-BR', { maximumFractionDigits: 2 })}</td>
 											<td>{moment(transaction.date).format('DD/MM/YYYY')}</td>
+											<td>{transaction.description}</td>
 											<td>{moment(transaction.date_last_updated).format('DD/MM/YYYY HH:mm')}</td>
 											<td>
 												<button

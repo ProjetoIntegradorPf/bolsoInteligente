@@ -1,10 +1,11 @@
+from typing import Optional
 import pydantic
 from datetime import date, datetime
 
 
 class InvestmentBase(pydantic.BaseModel):
     user_id: int
-    description: str
+    description: Optional[str] = ''
     type: str
     investment_amount: float
     start_date: date
